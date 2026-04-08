@@ -9,6 +9,7 @@ import { JobFinder } from '@/components/tools/JobFinder';
 import { RussianCalendar } from '@/components/tools/RussianCalendar';
 import { SanctionsChecker } from '@/components/tools/SanctionsChecker';
 import { NewsSection } from '@/components/tools/NewsSection';
+import { VoiceTranslator } from '@/components/tools/VoiceTranslator';
 import { AdBanner } from '@/components/layout/AdBanner';
 import { 
   Scan, 
@@ -94,10 +95,11 @@ const TOOLS = [
   },
   { 
     id: 'language', 
-    name: 'Russian Shortcuts', 
-    desc: 'Essential phrases for survival in day-to-day interactions.', 
+    name: 'Voice Translator', 
+    desc: 'Bilingual AI with text-to-speech for Russian and English.', 
     icon: MessageSquare, 
-    color: 'purple'
+    color: 'purple',
+    component: VoiceTranslator
   }
 ];
 
