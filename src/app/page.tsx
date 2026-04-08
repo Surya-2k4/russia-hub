@@ -16,19 +16,19 @@ export default function Home() {
            <Plane size={14} className="rotate-45" /> New Session 2024-25 Opening Soon
          </div>
          
-         <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 tracking-tighter leading-tight bg-gradient-to-br from-white via-[#E6EDF3] to-[#8B949E] bg-clip-text text-transparent">
+         <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 tracking-tighter leading-tight bg-gradient-to-br from-foreground via-foreground/80 to-muted bg-clip-text text-transparent">
            Your Journey to <span className="text-blue-500">Russia</span> <br />Starts Here.
          </h1>
          
-         <p className="max-w-2xl text-[#8B949E] text-lg md:text-xl leading-relaxed mb-10">
+         <p className="max-w-2xl text-muted text-lg md:text-xl leading-relaxed mb-10">
            The ultimate dashboard for international students. Track your visa, calculate expenses, find universities, and join the expat community.
          </p>
          
          <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/bureaucracy" className="px-8 py-4 bg-white text-black font-bold rounded-2xl hover:bg-blue-600 hover:text-white transition-all transform hover:scale-105 shadow-xl flex items-center gap-2">
+            <Link href="/bureaucracy" className="px-8 py-4 bg-white text-black font-bold rounded-2xl hover:bg-blue-600 hover:text-foreground transition-all transform hover:scale-105 shadow-xl flex items-center gap-2">
                Get Started <ArrowUpRight size={20} />
             </Link>
-            <Link href="/community" className="px-8 py-4 bg-[#161B22] text-white font-bold rounded-2xl border border-[#30363D] hover:border-blue-500 transition-all flex items-center gap-2">
+            <Link href="/community" className="px-8 py-4 bg-surface text-foreground font-bold rounded-2xl border border-border hover:border-blue-500 transition-all flex items-center gap-2">
                Join Community
             </Link>
          </div>
@@ -43,25 +43,25 @@ export default function Home() {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Secondary Cards */}
-                <Link href="/universities" className="glass p-6 rounded-2xl border border-[#30363D] group hover:border-blue-500 transition-all relative overflow-hidden h-full">
+                <Link href="/universities" className="glass p-6 rounded-2xl border border-border group hover:border-blue-500 transition-all relative overflow-hidden h-full">
                    <div className="flex justify-between items-start mb-6">
                       <div className="p-3 bg-blue-500/10 rounded-xl text-blue-500"><GraduationCap size={24} /></div>
-                      <ArrowUpRight className="text-[#30363D] group-hover:text-blue-500 transition-colors" size={20} />
+                      <ArrowUpRight className="text-border group-hover:text-blue-500 transition-colors" size={20} />
                    </div>
-                   <h3 className="text-xl font-bold text-white mb-2">University Finder</h3>
-                   <p className="text-sm text-[#8B949E]">Browse through 30+ top-tier Russian medical and technical universities.</p>
+                   <h3 className="text-xl font-bold text-foreground mb-2">University Finder</h3>
+                   <p className="text-sm text-muted">Browse through 30+ top-tier Russian medical and technical universities.</p>
                    <div className="absolute -bottom-6 -right-6 text-blue-500/5 group-hover:text-blue-500/10 transition-colors">
                       <GraduationCap size={120} />
                    </div>
                 </Link>
 
-                <Link href="/community" className="glass p-6 rounded-2xl border border-[#30363D] group hover:border-red-500 transition-all relative overflow-hidden h-full">
+                <Link href="/community" className="glass p-6 rounded-2xl border border-border group hover:border-red-500 transition-all relative overflow-hidden h-full">
                    <div className="flex justify-between items-start mb-6">
                       <div className="p-3 bg-red-500/10 rounded-xl text-red-500"><MapIcon size={24} /></div>
-                      <ArrowUpRight className="text-[#30363D] group-hover:text-red-500 transition-colors" size={20} />
+                      <ArrowUpRight className="text-border group-hover:text-red-500 transition-colors" size={20} />
                    </div>
-                   <h3 className="text-xl font-bold text-white mb-2">Student Map</h3>
-                   <p className="text-sm text-[#8B949E]">See where other international students are located across the motherland.</p>
+                   <h3 className="text-xl font-bold text-foreground mb-2">Student Map</h3>
+                   <p className="text-sm text-muted">See where other international students are located across the motherland.</p>
                    <div className="absolute -bottom-6 -right-6 text-red-500/5 group-hover:text-red-500/10 transition-colors">
                       <MapIcon size={120} />
                    </div>
@@ -72,18 +72,18 @@ export default function Home() {
          <div className="space-y-8 h-full">
             <CurrencyConverter />
             
-            <div className="glass p-6 rounded-2xl border border-[#30363D] relative overflow-hidden">
-               <div className="p-3 bg-[#F0B429]/10 rounded-xl text-[#F0B429] w-fit mb-4"><Wallet size={20} /></div>
-               <h3 className="text-lg font-bold text-white mb-2 tracking-tight">Quick Finance Tips</h3>
+            <div className="glass p-6 rounded-2xl border border-border relative overflow-hidden">
+               <div className="p-3 bg-gold/10 rounded-xl text-gold w-fit mb-4"><Wallet size={20} /></div>
+               <h3 className="text-lg font-bold text-foreground mb-2 tracking-tight">Quick Finance Tips</h3>
                <ul className="space-y-3">
-                  <li className="text-xs text-[#8B949E] flex items-center gap-2">
+                  <li className="text-xs text-muted flex items-center gap-2">
                      <div className="w-1 h-1 bg-green-500 rounded-full" /> Sberbank and Tinkoff are the safest bets for apps.
                   </li>
-                  <li className="text-xs text-[#8B949E] flex items-center gap-2">
+                  <li className="text-xs text-muted flex items-center gap-2">
                      <div className="w-1 h-1 bg-green-500 rounded-full" /> Use P2P for the best conversion rates (INR ↔ USDT ↔ RUB).
                   </li>
                </ul>
-               <Link href="/finance" className="mt-6 text-xs font-bold text-[#F0B429] flex items-center gap-2 hover:underline">
+               <Link href="/finance" className="mt-6 text-xs font-bold text-gold flex items-center gap-2 hover:underline">
                   Full Financial Guide <ArrowUpRight size={14} />
                </Link>
             </div>

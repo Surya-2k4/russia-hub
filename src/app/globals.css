@@ -2,22 +2,41 @@
 
 :root {
   --background: #0D1117;
-  --foreground: #E6EDF3;
+  --foreground: #F0F6FC;
   --surface: #161B22;
+  --surface-hover: #1C2128;
+  --muted: #8B949E;
   --border: #30363D;
-  --primary: #1A3A6B;
+  --primary: #2F81F7;
   --accent: #CC0000;
   --gold: #F0B429;
+  --card-bg: rgba(22, 27, 34, 0.7);
+}
+
+[data-theme='light'] {
+  --background: #F8FAFC;
+  --foreground: #0F172A;
+  --surface: #FFFFFF;
+  --surface-hover: #F1F5F9;
+  --muted: #64748B;
+  --border: #E2E8F0;
+  --primary: #2563EB;
+  --accent: #DC2626;
+  --gold: #D97706;
+  --card-bg: rgba(255, 255, 255, 0.8);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-muted: var(--muted);
   --color-border: var(--border);
   --color-primary: var(--primary);
   --color-accent: var(--accent);
   --color-gold: var(--gold);
+  --color-card-bg: var(--card-bg);
 }
 
 body {
@@ -34,10 +53,10 @@ h1, h2, h3, h4 {
 
 /* Glassmorphism utility */
 .glass {
-  background: rgba(22, 27, 34, 0.7);
+  background: var(--card-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(48, 54, 61, 0.5);
+  border: 1px solid var(--border);
 }
 
 .glass-hover:hover {

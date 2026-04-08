@@ -13,23 +13,27 @@ export const metadata: Metadata = {
   keywords: 'Study in Russia, Russian University Finder, Russian Visa Tracker, RUB to INR Converter, International Students Russia',
 };
 
+import { ThemeProvider } from '@/components/ThemeProvider';
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${montserrat.variable} bg-[#0D1117] text-[#E6EDF3]`}>
+    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${montserrat.variable}`}>
       <head>
         {/* Placeholder for Google AdSense Script */}
         {/* <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXX" crossOrigin="anonymous"></script> */}
       </head>
-      <body className="antialiased min-h-screen flex flex-col selection:bg-blue-500/30">
-        <Navbar />
-        <main className="flex-1 pb-10">
-          {children}
-        </main>
-        <Footer />
+      <body className="antialiased min-h-screen flex flex-col selection:bg-blue-500/30 bg-background text-foreground">
+        <ThemeProvider attribute="data-theme" defaultTheme="dark" enableSystem={false}>
+          <Navbar />
+          <main className="flex-1 pb-10">
+            {children}
+          </main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

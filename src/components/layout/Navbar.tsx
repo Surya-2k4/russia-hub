@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const NAV_ITEMS = [
   { href: '/', label: 'Dashboard', icon: LayoutDashboard },
@@ -34,23 +35,26 @@ export function Navbar() {
   return (
     <>
       {/* Top Brand Header (Visible on Mobile) */}
-      <header className="sticky top-0 left-0 right-0 z-[100] bg-[#161B22]/95 backdrop-blur-xl border-b border-[#30363D] md:hidden">
+      <header className="sticky top-0 left-0 right-0 z-[100] bg-surface/95 backdrop-blur-xl border-b border-border md:hidden">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2 font-black text-lg text-[#F0B429] tracking-tighter">
+          <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-2 font-black text-lg text-gold tracking-tighter">
             <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-700 via-white to-red-600 border border-white/20 flex items-center justify-center p-0.5">
-               <div className="bg-[#161B22] w-full h-full rounded-full flex items-center justify-center">
+               <div className="bg-surface w-full h-full rounded-full flex items-center justify-center">
                   <span className="text-white text-[10px] font-black">RU</span>
                </div>
             </div>
             <span>Russia Hub</span>
           </Link>
           
-          <button 
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className={`p-2 rounded-xl transition-all ${isMobileMenuOpen ? 'bg-red-600/10 text-red-500' : 'bg-white/5 text-[#8B949E]'}`}
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <button 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className={`p-2 rounded-xl transition-all ${isMobileMenuOpen ? 'bg-red-600/10 text-red-500' : 'bg-muted/10 text-muted'}`}
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
       </header>
 
@@ -111,12 +115,12 @@ export function Navbar() {
       </AnimatePresence>
 
       {/* Main Navigation (Visible on Desktop, Bottom shortcuts on Mobile) */}
-      <nav className={`fixed bottom-0 left-0 right-0 z-50 bg-[#161B22]/90 backdrop-blur-xl border-t border-[#30363D] md:relative md:top-0 md:bg-[#161B22]/30 md:border-t-0 md:border-b transition-all duration-300 ${isMobileMenuOpen ? 'translate-y-20 opacity-0' : 'translate-y-0 opacity-100'}`}>
+      <nav className={`fixed bottom-0 left-0 right-0 z-50 bg-surface/90 backdrop-blur-xl border-t border-border md:relative md:top-0 md:bg-surface/30 md:border-t-0 md:border-b transition-all duration-300 ${isMobileMenuOpen ? 'translate-y-20 opacity-0' : 'translate-y-0 opacity-100'}`}>
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between font-montserrat">
           {/* Logo - Desktop Only */}
-          <Link href="/" className="hidden md:flex items-center gap-4 font-black text-xl text-[#F0B429] tracking-tighter">
+          <Link href="/" className="hidden md:flex items-center gap-4 font-black text-xl text-gold tracking-tighter">
             <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-700 via-white to-red-600 border border-white/20 flex items-center justify-center p-0.5">
-               <div className="bg-[#161B22] w-full h-full rounded-full flex items-center justify-center">
+               <div className="bg-surface w-full h-full rounded-full flex items-center justify-center">
                   <span className="text-white text-xs font-black">RU</span>
                </div>
             </div>
@@ -124,27 +128,32 @@ export function Navbar() {
           </Link>
 
           {/* Desktop/Bottom Nav Items */}
-          <ul className="flex flex-1 justify-around md:justify-end md:gap-8 items-center h-full">
-            {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
-              const isActive = pathname === href;
-              return (
-                <li key={href} className="relative h-full flex items-center">
-                  <Link
-                    href={href}
-                    className={`flex flex-col md:flex-row items-center gap-1 md:gap-2 px-2 py-1 transition-all group ${
-                      isActive ? 'text-[#F0B429]' : 'text-[#8B949E] hover:text-[#E6EDF3]'
-                    }`}
-                  >
-                    <Icon size={20} className={isActive ? 'scale-110' : 'group-hover:scale-110 transition-transform'} />
-                    <span className="text-[9px] md:text-sm font-bold tracking-tight md:tracking-normal">{label}</span>
-                    {isActive && (
-                      <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#F0B429] md:bg-[#CC0000] rounded-full scale-x-100" />
-                    )}
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+          <div className="flex items-center gap-4 md:gap-8 flex-1 justify-around md:justify-end">
+            <ul className="flex justify-around md:justify-end md:gap-8 items-center h-full">
+              {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
+                const isActive = pathname === href;
+                return (
+                  <li key={href} className="relative h-full flex items-center">
+                    <Link
+                      href={href}
+                      className={`flex flex-col md:flex-row items-center gap-1 md:gap-2 px-2 py-1 transition-all group ${
+                        isActive ? 'text-gold' : 'text-muted hover:text-foreground'
+                      }`}
+                    >
+                      <Icon size={20} className={isActive ? 'scale-110' : 'group-hover:scale-110 transition-transform'} />
+                      <span className="text-[9px] md:text-sm font-bold tracking-tight md:tracking-normal">{label}</span>
+                      {isActive && (
+                        <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold md:bg-accent rounded-full scale-x-100" />
+                      )}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+            <div className="hidden md:block">
+              <ThemeToggle />
+            </div>
+          </div>
         </div>
       </nav>
     </>
