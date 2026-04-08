@@ -17,17 +17,24 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 
 const CHANNELS = ["general", "admissions", "housing", "legal-help", "buy-sell", "travel"];
-const INITIAL_MESSAGES = [
-  { id: 1, user: "Alex_RU", text: "Hey! Does anyone know if the medical check center in Moscow is open today?", time: "10:30 AM", channel: "general" },
-  { id: 2, user: "Priya_IN", text: "Yes, it is. I just came back. Make sure to reach before 1 PM.", time: "10:32 AM", channel: "general" },
-  { id: 3, user: "Dmitry_Mod", text: "Welcome to the Hub! Please check the pinned messages for the latest visa updates.", time: "09:00 AM", channel: "general" },
-];
+const CHANNEL_DESCRIPTIONS: Record<string, string> = {
+  "general": "The main hub for everything! Say hello and start your journey.",
+  "admissions": "Get help with university applications, documents, and entrance exams.",
+  "housing": "Find dormitories, apartments, and roommates across all Russian cities.",
+  "legal-help": "Visa, registration, and migration legal support from experts.",
+  "buy-sell": "Marketplace for students. Buy or sell textbooks, clothes, and electronics.",
+  "travel": "Backpacking in Russia? Share tips, routes, and travel buddies."
+};
+
+const INITIAL_MESSAGES: any[] = [];
 
 export function OnlineChat() {
   const [activeChannel, setActiveChannel] = useState("general");
   const [messages, setMessages] = useState(INITIAL_MESSAGES);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [onlineCount, setOnlineCount] = useState(1204);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -39,6 +46,13 @@ export function OnlineChat() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setOnlineCount(prev => prev + (Math.random() > 0.5 ? 1 : -1));
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,7 +77,7 @@ export function OnlineChat() {
         const reply = {
           id: Date.now() + 1,
           user: "HubBot",
-          text: `Thanks for sharing in #${activeChannel}! Our community will get back to you soon.`,
+          text: `Thanks for sharing in #general! Our community will get back to you soon.`,
           time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           channel: activeChannel
         };
@@ -117,16 +131,14 @@ export function OnlineChat() {
         <div className="h-16 flex items-center justify-between px-6 border-b border-[#30363D] bg-[#0D1117]/50">
            <div className="flex items-center gap-4">
              <div className="p-2 bg-blue-600/10 rounded-lg text-blue-500"><Hash size={20} /></div>
-             <div>
-                <h4 className="font-bold text-white text-sm">#{activeChannel}</h4>
-                <p className="text-[10px] text-[#8B949E]">Discuss anything about {activeChannel}</p>
-             </div>
-           </div>
-           <div className="flex items-center gap-4 text-[#8B949E]">
-              <Search size={18} className="cursor-pointer hover:text-white transition-colors" />
-              <Users size={18} className="cursor-pointer hover:text-white transition-colors" />
-              <MoreVertical size={18} className="cursor-pointer hover:text-white transition-colors" />
-           </div>
+            <div>
+              <h4 className="font-bold text-white text-sm">#{activeChannel}</h4>
+              <p className="text-[10px] text-[#8B949E]">{CHANNEL_DESCRIPTIONS[activeChannel]}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-4 text-[#8B949E]">
+            {/* Icons removed per request */}
+          </div>
         </div>
 
         {/* Messages */}
@@ -184,9 +196,39 @@ export function OnlineChat() {
              onSubmit={handleSendMessage}
              className="bg-[#0D1117] border border-[#30363D] rounded-2xl p-2 flex items-center gap-2 shadow-inner focus-within:border-blue-500/50 transition-all"
            >
-              <div className="flex items-center gap-2 px-2 border-r border-[#30363D]">
-                 <button type="button" className="p-2 text-[#8B949E] hover:text-blue-500"><Paperclip size={20} /></button>
-                 <button type="button" className="p-2 text-[#8B949E] hover:text-blue-500"><Smile size={20} /></button>
+              <div className="flex items-center gap-2 px-2 border-r border-[#30363D] relative">
+                 <button 
+                   type="button" 
+                   onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                   className={`p-2 transition-colors ${showEmojiPicker ? 'text-blue-500' : 'text-[#8B949E] hover:text-blue-500'}`}
+                 >
+                   <Smile size={20} />
+                 </button>
+                 
+                 <AnimatePresence>
+                   {showEmojiPicker && (
+                     <motion.div 
+                       initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                       animate={{ opacity: 1, y: 0, scale: 1 }}
+                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                       className="absolute bottom-full left-0 mb-4 bg-[#0D1117] border border-[#30363D] p-3 rounded-2xl shadow-2xl grid grid-cols-4 gap-2 z-50 w-48"
+                     >
+                       {["😀", "😂", "😍", "🎉", "🔥", "🙌", "🇷🇺", "🎓", "🚀", "✨", "🙏", "❤️"].map(emoji => (
+                         <button
+                           key={emoji}
+                           type="button"
+                           onClick={() => {
+                             setInput(prev => prev + emoji);
+                             setShowEmojiPicker(false);
+                           }}
+                           className="text-xl hover:bg-white/5 p-2 rounded-lg transition-colors"
+                         >
+                           {emoji}
+                         </button>
+                       ))}
+                     </motion.div>
+                   )}
+                 </AnimatePresence>
               </div>
               <input 
                 type="text"
@@ -207,7 +249,7 @@ export function OnlineChat() {
               <div className="flex items-center gap-4">
                  <div className="flex items-center gap-1.5">
                     <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                    <span className="text-[10px] font-bold text-[#8B949E] uppercase tracking-widest">1,204 Students Online</span>
+                    <span className="text-[10px] font-bold text-[#8B949E] uppercase tracking-widest">{onlineCount.toLocaleString()} Students Online</span>
                  </div>
                  <div className="flex items-center gap-1.5">
                     <ShieldCheck size={12} className="text-blue-500" />
