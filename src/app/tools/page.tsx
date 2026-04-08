@@ -7,6 +7,8 @@ import { HowToGuides } from '@/components/tools/HowToGuides';
 import { ClimateTracker } from '@/components/tools/ClimateTracker';
 import { JobFinder } from '@/components/tools/JobFinder';
 import { RussianCalendar } from '@/components/tools/RussianCalendar';
+import { SanctionsChecker } from '@/components/tools/SanctionsChecker';
+import { NewsSection } from '@/components/tools/NewsSection';
 import { AdBanner } from '@/components/layout/AdBanner';
 import { 
   Scan, 
@@ -19,7 +21,9 @@ import {
   TrendingUp,
   MessageSquare,
   Calendar,
-  Briefcase
+  Briefcase,
+  ShieldAlert,
+  Newspaper
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -73,6 +77,22 @@ const TOOLS = [
     component: JobFinder
   },
   { 
+    id: 'sanctions', 
+    name: 'Sanctions Watch', 
+    desc: 'Verify entities against global OFAC, EU, and UK sanctions lists.', 
+    icon: ShieldAlert, 
+    color: 'red',
+    component: SanctionsChecker
+  },
+  { 
+    id: 'news', 
+    name: 'Russian News', 
+    desc: 'Live updates from official Russian news agencies and global feeds.', 
+    icon: Newspaper, 
+    color: 'blue',
+    component: NewsSection
+  },
+  { 
     id: 'language', 
     name: 'Russian Shortcuts', 
     desc: 'Essential phrases for survival in day-to-day interactions.', 
@@ -88,14 +108,14 @@ export default function ToolsPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
-      <header className="mb-12 relative overflow-hidden p-8 rounded-3xl bg-gradient-to-br from-[#161B22] to-[#0D1117] border border-[#30363D]">
+      <header className="mb-12 relative overflow-hidden p-8 rounded-3xl bg-gradient-to-br from-[#161B22] to-[#0D1117] border border-border">
          <div className="absolute top-0 right-0 -mr-20 -mt-20 w-80 h-80 bg-blue-600/5 blur-[120px] rounded-full" />
          <div className="relative z-10">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/10 border border-blue-500/20 rounded-full text-[10px] font-bold text-blue-400 mb-6 uppercase tracking-widest">
                <Sparkles size={14} /> Ultimate Survival Kit
             </div>
             <h1 className="text-4xl md:text-6xl font-black mb-4 tracking-tight leading-tight">Student <span className="text-blue-500">Survival</span> Tools</h1>
-            <p className="text-[#8B949E] text-lg max-w-2xl leading-relaxed">
+            <p className="text-muted text-lg max-w-2xl leading-relaxed">
               Handy utilities to help you navigate life in Russia. From document translation to siberian wardrobe advice.
             </p>
          </div>
@@ -117,17 +137,17 @@ export default function ToolsPage() {
             className={`flex flex-col text-left p-6 rounded-3xl border transition-all h-full group relative overflow-hidden ${
               activeTool === tool.id 
                 ? 'bg-blue-600/10 border-blue-500 shadow-[0_0_30px_rgba(37,99,235,0.15)] ring-1 ring-blue-500/50' 
-                : 'glass bg-[#161B22]/50 border-[#30363D] hover:border-blue-500/50'
+                : 'glass bg-surface/50 border-border hover:border-blue-500/50'
             }`}
           >
-             <div className={`p-4 rounded-2xl bg-white/5 border border-white/10 text-[#8B949E] group-hover:bg-blue-600 group-hover:text-white transition-all w-fit mb-6 ${activeTool === tool.id ? 'bg-blue-600 text-white' : ''}`}>
+             <div className={`p-4 rounded-2xl bg-white/5 border border-white/10 text-muted group-hover:bg-blue-600 group-hover:text-foreground transition-all w-fit mb-6 ${activeTool === tool.id ? 'bg-blue-600 text-foreground' : ''}`}>
                 <tool.icon size={24} />
              </div>
-             <h3 className="text-lg font-bold text-white mb-2 flex items-center gap-2">
+             <h3 className="text-lg font-bold text-foreground mb-2 flex items-center gap-2">
                 {tool.name}
                 {activeTool === tool.id && <TrendingUp size={14} className="text-blue-500" />}
              </h3>
-             <p className="text-xs text-[#8B949E] leading-relaxed flex-1">{tool.desc}</p>
+             <p className="text-xs text-muted leading-relaxed flex-1">{tool.desc}</p>
              
              {!tool.component && (
                 <div className="mt-4 flex items-center gap-2">
@@ -150,12 +170,12 @@ export default function ToolsPage() {
              initial={{ opacity: 0, x: 20 }}
              animate={{ opacity: 1, x: 0 }}
              exit={{ opacity: 0, x: -20 }}
-             className="relative pt-8 border-t border-[#30363D]/50"
+             className="relative pt-8 border-t border-border/50"
            >
               <div className="absolute top-0 right-0 py-4">
                  <button 
                    onClick={() => setActiveTool(null)}
-                   className="text-[10px] font-bold text-[#8B949E] uppercase tracking-widest hover:text-white flex items-center gap-2 bg-[#161B22] px-4 py-2 border border-[#30363D] rounded-full"
+                   className="text-[10px] font-bold text-muted uppercase tracking-widest hover:text-foreground flex items-center gap-2 bg-surface px-4 py-2 border border-border rounded-full"
                  >
                     Close Tool &times;
                  </button>
@@ -169,7 +189,7 @@ export default function ToolsPage() {
              initial={{ opacity: 0 }} animate={{ opacity: 1 }}
              className="flex flex-col items-center justify-center py-20 text-[#30363D]"
            >
-              <div className="p-8 rounded-full border-2 border-dashed border-[#30363D] mb-4">
+              <div className="p-8 rounded-full border-2 border-dashed border-border mb-4">
                  <LayoutGrid size={48} className="opacity-20" />
               </div>
               <p className="text-sm font-bold uppercase tracking-widest opacity-50">Select a tool above to get started</p>
@@ -185,8 +205,8 @@ export default function ToolsPage() {
       <section className="mt-20">
          <div className="flex items-center justify-between mb-8">
             <div>
-               <h3 className="text-2xl font-bold text-white tracking-tight">Must-have Mobile Apps</h3>
-               <p className="text-sm text-[#8B949E] mt-1">Essential applications for living and traveling in Russia.</p>
+               <h3 className="text-2xl font-bold text-foreground tracking-tight">Must-have Mobile Apps</h3>
+               <p className="text-sm text-muted mt-1">Essential applications for living and traveling in Russia.</p>
             </div>
          </div>
          
@@ -199,14 +219,14 @@ export default function ToolsPage() {
               { name: "Ozon / Wildberries", desc: "The Amazon of Russia. Everything delivered in 24h.", category: "Shopping", icon: "📦" },
               { name: "Telegram", desc: "The primary communication tool for everyone in Russia.", category: "Social", icon: "💬" }
             ].map((app, idx) => (
-              <div key={idx} className="glass p-6 rounded-2xl border border-[#30363D] hover:border-blue-500/30 transition-all flex items-center gap-4 group">
+              <div key={idx} className="glass p-6 rounded-2xl border border-border hover:border-blue-500/30 transition-all flex items-center gap-4 group">
                  <div className="text-3xl bg-white/5 w-12 h-12 flex items-center justify-center rounded-xl border border-white/10 group-hover:scale-110 transition-transform">
                     {app.icon}
                  </div>
                  <div>
                     <span className="text-[8px] font-black uppercase text-blue-400 tracking-widest">{app.category}</span>
-                    <h4 className="text-sm font-bold text-white mb-1">{app.name}</h4>
-                    <p className="text-xs text-[#8B949E] leading-tight">{app.desc}</p>
+                    <h4 className="text-sm font-bold text-foreground mb-1">{app.name}</h4>
+                    <p className="text-xs text-muted leading-tight">{app.desc}</p>
                  </div>
               </div>
             ))}
@@ -214,10 +234,10 @@ export default function ToolsPage() {
       </section>
 
       {/* Static Language Section */}
-      <section className="mt-20 glass p-8 rounded-3xl border border-[#30363D] bg-[#161B22]/30 relative overflow-hidden">
+      <section className="mt-20 glass p-8 rounded-3xl border border-border bg-surface/30 relative overflow-hidden">
          <div className="absolute bottom-0 right-0 -mr-10 -mb-10 w-40 h-40 bg-purple-500/5 blur-[50px] rounded-full" />
          <div className="flex justify-between items-center mb-10">
-            <h3 className="text-2xl font-bold text-white flex items-center gap-3">
+            <h3 className="text-2xl font-bold text-foreground flex items-center gap-3">
                <BookOpen size={28} className="text-blue-500" />
                Russian Language Shortcuts
             </h3>
@@ -230,19 +250,19 @@ export default function ToolsPage() {
               { ru: "Пожалуйста", en: "Please / Welcome", ph: "Po-zha-luy-sta" },
               { ru: "Где туалет?", en: "Where is the toilet?", ph: "Gde tu-a-let?" }
             ].map((phrase, idx) => (
-              <div key={idx} className="p-6 rounded-2xl bg-[#0D1117]/80 border border-[#30363D] group hover:border-blue-500/50 transition-all border-b-4 border-b-[#30363D] hover:border-b-blue-500/50">
-                 <p className="text-2xl font-bold text-white mb-2">{phrase.ru}</p>
+              <div key={idx} className="p-6 rounded-2xl bg-background/80 border border-border group hover:border-blue-500/50 transition-all border-b-4 border-b-[#30363D] hover:border-b-blue-500/50">
+                 <p className="text-2xl font-bold text-foreground mb-2">{phrase.ru}</p>
                  <div className="flex flex-col gap-1">
                     <p className="text-[10px] text-blue-400 font-bold mb-2 uppercase tracking-tighter opacity-80">{phrase.ph}</p>
-                    <p className="text-xs text-[#8B949E] italic leading-tight group-hover:text-[#E6EDF3] transition-colors">{phrase.en}</p>
+                    <p className="text-xs text-muted italic leading-tight group-hover:text-[#E6EDF3] transition-colors">{phrase.en}</p>
                  </div>
               </div>
             ))}
          </div>
       </section>
       
-      <footer className="mt-20 py-8 border-t border-[#30363D] text-center">
-         <p className="text-xs text-[#8B949E] italic opacity-50 font-mono">Tools are optimized for mobile-web and browser use.</p>
+      <footer className="mt-20 py-8 border-t border-border text-center">
+         <p className="text-xs text-muted italic opacity-50 font-mono">Tools are optimized for mobile-web and browser use.</p>
       </footer>
     </div>
   );

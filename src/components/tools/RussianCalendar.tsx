@@ -85,32 +85,41 @@ export function RussianCalendar() {
             </div>
 
             <div className="grid grid-cols-7 gap-2">
-               {days.map((day, idx) => {
-                 if (!day) return <div key={idx} className="aspect-square" />;
-                 const holiday = isHoliday(day);
-                 return (
-                   <div 
-                     key={idx} 
-                     className={`aspect-square rounded-xl border flex flex-col items-center justify-center relative transition-all group cursor-default ${
-                       holiday 
-                         ? 'bg-red-500/10 border-red-500/20 text-red-500 font-black' 
-                         : 'bg-background border-border text-foreground'
-                     }`}
-                   >
-                      <span className="text-sm">{day}</span>
-                      {holiday && (
-                        <div className="absolute bottom-1 w-1 h-1 bg-red-500 rounded-full" />
-                      )}
-                      {holiday && (
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block z-50">
-                           <div className="bg-foreground text-background text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-lg shadow-xl whitespace-nowrap">
-                              {holiday.name}
-                           </div>
-                        </div>
-                      )}
-                   </div>
-                 );
-               })}
+                {days.map((day, idx) => {
+                  if (!day) return <div key={idx} className="aspect-square" />;
+                  const holiday = isHoliday(day);
+                  const isToday = new Date().toDateString() === new Date(year, currentDate.getMonth(), day).toDateString();
+                  
+                  return (
+                    <div 
+                      key={idx} 
+                      className={`aspect-square rounded-xl border flex flex-col items-center justify-center relative transition-all group cursor-default ${
+                        isToday 
+                          ? 'bg-blue-600 border-blue-500 text-white font-black shadow-lg ring-2 ring-blue-500/20 z-10'
+                          : holiday 
+                          ? 'bg-red-500/10 border-red-500/20 text-red-500 font-black' 
+                          : 'bg-background border-border text-foreground'
+                      }`}
+                    >
+                       <span className="text-sm">{day}</span>
+                       {holiday && !isToday && (
+                         <div className="absolute bottom-1 w-1 h-1 bg-red-500 rounded-full" />
+                       )}
+                       {isToday && (
+                         <div className="absolute top-1 right-1">
+                            <Sparkles size={10} className="text-blue-200 animate-pulse" />
+                         </div>
+                       )}
+                       {holiday && (
+                         <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block z-50">
+                            <div className="bg-foreground text-background text-[8px] font-black uppercase tracking-widest px-2 py-1 rounded-lg shadow-xl whitespace-nowrap">
+                               {holiday.name}
+                            </div>
+                         </div>
+                       )}
+                    </div>
+                  );
+                })}
             </div>
          </div>
 

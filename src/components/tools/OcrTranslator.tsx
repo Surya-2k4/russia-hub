@@ -51,10 +51,30 @@ export function OcrTranslator() {
       const { data: { text } } = await worker.recognize(file);
       setText(text);
       await worker.terminate();
+      
+      // Auto-translate after OCR
+      if (text) {
+        await translateTextAfterOcr(text);
+      }
     } catch (error) {
       console.error("OCR Error:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const translateTextAfterOcr = async (rawText: string) => {
+    setTranslating(true);
+    try {
+      const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(rawText.substring(0, 500))}&langpair=ru|en`);
+      const data = await response.json();
+      if (data.responseData?.translatedText) {
+        setTranslatedText(data.responseData.translatedText);
+      }
+    } catch (error) {
+      console.error("Translation error:", error);
+    } finally {
+      setTranslating(false);
     }
   };
 
@@ -79,18 +99,18 @@ export function OcrTranslator() {
   };
 
   return (
-    <div className="glass rounded-3xl border border-[#30363D] overflow-hidden shadow-2xl">
-      <div className="p-6 bg-[#161B22]/50 border-b border-[#30363D] flex items-center justify-between">
+    <div className="glass rounded-3xl border border-border overflow-hidden shadow-2xl">
+      <div className="p-6 bg-surface/50 border-b border-border flex items-center justify-between">
         <div className="flex items-center gap-3">
            <div className="p-2 bg-blue-500/10 rounded-lg text-blue-500 border border-blue-500/20">
               <Scan size={24} />
            </div>
            <div>
               <h3 className="text-xl font-bold text-white tracking-tight">OCR Document Reader</h3>
-              <p className="text-[10px] text-[#8B949E] uppercase font-bold tracking-widest mt-0.5">Supports: RU + EN Documents</p>
+              <p className="text-[10px] text-muted uppercase font-bold tracking-widest mt-0.5">Supports: RU + EN Documents</p>
            </div>
         </div>
-        <Languages className="text-[#8B949E]" size={20} />
+        <Languages className="text-muted" size={20} />
       </div>
 
       <div className="p-8">
@@ -98,7 +118,7 @@ export function OcrTranslator() {
            {/* Upload Area */}
            <div 
              onClick={() => fileInputRef.current?.click()}
-             className={`relative group cursor-pointer aspect-square rounded-2xl border-2 border-dashed border-[#30363D] hover:border-blue-500/50 transition-all flex flex-col items-center justify-center p-8 bg-[#0D1117] ${loading || translating ? 'pointer-events-none' : ''}`}
+             className={`relative group cursor-pointer aspect-square rounded-2xl border-2 border-dashed border-border hover:border-blue-500/50 transition-all flex flex-col items-center justify-center p-8 bg-background ${loading || translating ? 'pointer-events-none' : ''}`}
            >
               {image ? (
                 <img src={image} className="w-full h-full object-contain rounded-xl opacity-40 group-hover:opacity-20 transition-all" alt="Upload" />
@@ -108,8 +128,8 @@ export function OcrTranslator() {
                       <Upload size={32} />
                    </div>
                    <div>
-                      <p className="text-sm font-bold text-white mb-1">Click to Upload Document</p>
-                      <p className="text-xs text-[#8B949E]">or drag and drop JPG/PNG</p>
+                      <p className="text-sm font-bold text-white mb-1">Upload Document or PDF</p>
+                      <p className="text-xs text-muted">Supports JPG, PNG, and PDF documents</p>
                    </div>
                 </div>
               )}
@@ -118,7 +138,7 @@ export function OcrTranslator() {
                 {loading && (
                    <motion.div 
                      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                     className="absolute inset-0 bg-[#0D1117]/80 backdrop-blur-sm flex flex-col items-center justify-center gap-4 z-20"
+                     className="absolute inset-0 bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center gap-4 z-20"
                    >
                        <div className="relative w-20 h-20">
                           <Loader2 size={80} className="text-blue-500 animate-spin opacity-20" />
@@ -126,7 +146,7 @@ export function OcrTranslator() {
                              <span className="text-lg font-bold text-white font-mono">{progress}%</span>
                           </div>
                        </div>
-                       <p className="text-xs text-[#8B949E] animate-pulse">Extracting Russian Text...</p>
+                       <p className="text-xs text-muted animate-pulse">Extracting Russian Text...</p>
                    </motion.div>
                 )}
               </AnimatePresence>
@@ -135,10 +155,10 @@ export function OcrTranslator() {
            </div>
 
            {/* Result Area */}
-           <div className="flex flex-col h-full rounded-2xl bg-[#0D1117]/50 border border-[#30363D] p-1 shadow-inner relative">
-              <div className="bg-[#161B22] p-4 rounded-xl flex-1 flex flex-col gap-4">
+           <div className="flex flex-col h-full rounded-2xl bg-background/50 border border-border p-1 shadow-inner relative">
+              <div className="bg-surface p-4 rounded-xl flex-1 flex flex-col gap-4">
                  <div className="flex justify-between items-center px-1">
-                    <h4 className="text-[10px] font-bold text-[#8B949E] uppercase tracking-wider flex items-center gap-2">
+                    <h4 className="text-[10px] font-bold text-muted uppercase tracking-wider flex items-center gap-2">
                        <FileText size={12} className="text-blue-400" />
                        Extracted Content
                     </h4>
@@ -157,13 +177,13 @@ export function OcrTranslator() {
                  <div className="grid grid-cols-1 gap-4 flex-1 overflow-hidden">
                     <div className="flex flex-col gap-2 h-full">
                        <span className="text-[8px] uppercase font-black text-[#30363D] tracking-widest pl-1">Russian Original</span>
-                       <div className="flex-1 min-h-[100px] overflow-y-auto text-[11px] text-[#E6EDF3] font-mono leading-relaxed bg-[#0D1117] p-3 rounded-lg border border-[#30363D]/50 border-inset whitespace-pre-wrap">
+                       <div className="flex-1 min-h-[100px] overflow-y-auto text-[11px] text-[#E6EDF3] font-mono leading-relaxed bg-background p-3 rounded-lg border border-border/50 border-inset whitespace-pre-wrap">
                           {text || <span className="opacity-20 italic">No text extracted yet...</span>}
                        </div>
                     </div>
 
                     {translatedText && (
-                      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col gap-2 h-full border-t border-[#30363D] pt-4">
+                      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col gap-2 h-full border-t border-border pt-4">
                          <span className="text-[8px] uppercase font-black text-blue-500/40 tracking-widest pl-1">English Translation</span>
                          <div className="flex-1 min-h-[100px] overflow-y-auto text-[11px] text-blue-100 font-mono leading-relaxed bg-blue-900/10 p-3 rounded-lg border border-blue-500/20 border-inset whitespace-pre-wrap">
                             {translatedText}
@@ -172,11 +192,11 @@ export function OcrTranslator() {
                     )}
                  </div>
 
-                 <div className="flex justify-end gap-2 px-1 border-t border-[#30363D] pt-3">
+                 <div className="flex justify-end gap-2 px-1 border-t border-border pt-3">
                     <button 
                       onClick={copyToClipboard} 
                       disabled={!text}
-                      className="p-2 text-[#8B949E] hover:text-white transition-all hover:bg-white/5 rounded-lg"
+                      className="p-2 text-muted hover:text-white transition-all hover:bg-white/5 rounded-lg"
                       title="Copy Result"
                     >
                       <Copy size={16} />
