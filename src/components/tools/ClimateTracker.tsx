@@ -22,7 +22,7 @@ const RUSSIAN_STATES = [
   "Vladivostok", "Sochi", "Murmansk", "Yakutsk", "Irkutsk", "Tomsk"
 ];
 
-export default function ClimatePage() {
+export function ClimateTracker() {
   const [city, setCity] = useState("Moscow");
   const [searchInput, setSearchInput] = useState("");
   const [weather, setWeather] = useState<any>(null);
@@ -70,29 +70,19 @@ export default function ClimatePage() {
   const nearest = weather?.nearest_area?.[0];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12">
-      <header className="mb-12">
-        <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/10 border border-blue-500/20 rounded-full text-[10px] font-bold text-blue-400 mb-6 uppercase tracking-widest">
-           <Sparkles size={14} /> Real-time Climate Grid
-        </div>
-        <h1 className="text-4xl md:text-5xl font-black mb-4">Russia <span className="text-blue-500">Climate</span> Status</h1>
-        <p className="text-[#8B949E] text-lg max-w-2xl">
-          Real-time weather data across all major Russian regions and cities. Plan your wardrobe and travel accordingly.
-        </p>
-      </header>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div className="space-y-8">
+      <div className="flex flex-col md:flex-row gap-6">
         {/* Sidebar: Preset Cities */}
-        <div className="space-y-4">
-           <div className="glass p-6 rounded-3xl border border-[#30363D] bg-[#161B22]/50">
-              <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-widest text-[#8B949E]">Major Hubs</h3>
+        <div className="w-full md:w-80 space-y-4">
+           <div className="glass p-6 rounded-3xl border border-border bg-surface/50">
+              <h3 className="text-xs font-black text-muted mb-4 uppercase tracking-widest leading-none">Major Hubs</h3>
               <div className="flex flex-wrap gap-2">
                  {RUSSIAN_STATES.map(s => (
                    <button 
                      key={s}
                      onClick={() => { setCity(s); fetchWeather(s); }}
-                     className={`px-4 py-2 rounded-xl text-xs font-bold transition-all border ${
-                       city === s ? 'bg-blue-600 border-blue-500 text-white shadow-lg' : 'bg-[#0D1117] border-[#30363D] text-[#8B949E] hover:border-blue-500/50'
+                     className={`px-3 py-1.5 rounded-xl text-[10px] font-bold transition-all border ${
+                       city === s ? 'bg-blue-600 border-blue-500 text-white shadow-lg' : 'bg-background border-border text-muted hover:border-blue-500/50'
                      }`}
                    >
                      {s}
@@ -104,27 +94,27 @@ export default function ClimatePage() {
            <form onSubmit={handleSearch} className="relative group">
               <input 
                 type="text" 
-                placeholder="Search manual city (e.g. Sochi)..."
+                placeholder="Search manual city..."
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
-                className="w-full bg-[#0D1117] border border-[#30363D] rounded-2xl py-4 pl-12 pr-4 text-white focus:border-blue-500 outline-hidden transition-all shadow-inner"
+                className="w-full bg-background border border-border rounded-2xl py-3 pl-10 pr-4 text-sm text-foreground focus:border-blue-500 outline-hidden transition-all shadow-inner"
               />
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8B949E] group-focus-within:text-blue-500" size={20} />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted group-focus-within:text-blue-500" size={18} />
               <button type="submit" className="hidden" />
            </form>
         </div>
 
         {/* Main Content: Weather Details */}
-        <div className="lg:col-span-2">
+        <div className="flex-1">
            <AnimatePresence mode="wait">
               {loading ? (
                 <motion.div 
                   key="loading"
                   initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                  className="glass h-[400px] rounded-3xl border border-[#30363D] flex flex-col items-center justify-center gap-4"
+                  className="glass h-[400px] rounded-3xl border border-border flex flex-col items-center justify-center gap-4"
                 >
                    <RefreshCw className="text-blue-500 animate-spin" size={48} />
-                   <p className="text-sm font-bold text-[#8B949E] uppercase tracking-widest">Fetching Siberia Status...</p>
+                   <p className="text-sm font-bold text-muted uppercase tracking-widest">Fetching Siberia Status...</p>
                 </motion.div>
               ) : error ? (
                 <motion.div 
@@ -133,7 +123,7 @@ export default function ClimatePage() {
                   className="glass h-[400px] rounded-3xl border border-red-500/20 flex flex-col items-center justify-center gap-4 text-center"
                 >
                    <div className="p-6 bg-red-500/10 rounded-full text-red-500"><CloudRain size={48} /></div>
-                   <p className="text-lg font-bold text-white">{error}</p>
+                   <p className="text-lg font-bold text-foreground">{error}</p>
                 </motion.div>
               ) : (
                 <motion.div 
@@ -142,7 +132,7 @@ export default function ClimatePage() {
                   className="space-y-6"
                 >
                    {/* Primary Weather Card */}
-                   <div className="glass p-8 rounded-3xl border border-[#30363D] bg-gradient-to-br from-[#161B22] to-[#0D1117] relative overflow-hidden">
+                   <div className="glass p-8 rounded-3xl border border-border bg-gradient-to-br from-surface to-background relative overflow-hidden">
                       <div className="absolute top-0 right-0 p-8 opacity-10">
                          {getWeatherIcon(current?.weatherDesc?.[0]?.value || "")}
                       </div>
@@ -151,46 +141,46 @@ export default function ClimatePage() {
                          <div className="flex items-center gap-2 text-blue-400 font-bold mb-8">
                             <MapPin size={18} />
                             <span className="text-xl">{city}</span>
-                            <span className="text-xs opacity-50 px-2 py-0.5 bg-white/5 rounded-full border border-white/10">{nearest?.region?.[0]?.value}, {nearest?.country?.[0]?.value}</span>
+                            <span className="text-[10px] opacity-50 px-2 py-0.5 bg-foreground/5 rounded-full border border-foreground/10">{nearest?.region?.[0]?.value}, {nearest?.country?.[0]?.value}</span>
                          </div>
 
                          <div className="flex items-end gap-6 mb-12">
-                            <h2 className="text-8xl font-black text-white leading-none tracking-tighter">
-                               {current?.temp_C}<span className="text-4xl text-blue-500 ml-2">°C</span>
+                            <h2 className="text-7xl font-black text-foreground leading-none tracking-tighter">
+                               {current?.temp_C}<span className="text-3xl text-blue-500 ml-2">°C</span>
                             </h2>
                             <div className="pb-2">
-                               <p className="text-2xl font-bold text-[#E6EDF3]">{current?.weatherDesc?.[0]?.value}</p>
-                               <p className="text-sm text-[#8B949E]">Feels like {current?.FeelsLikeC}°C</p>
+                               <p className="text-xl font-bold text-foreground">{current?.weatherDesc?.[0]?.value}</p>
+                               <p className="text-xs text-muted">Feels like {current?.FeelsLikeC}°C</p>
                             </div>
                          </div>
 
-                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <div className="p-4 bg-[#0D1117] border border-[#30363D] rounded-2xl flex items-center gap-3">
-                               <Wind className="text-blue-400" size={20} />
+                         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div className="p-3 bg-background border border-border rounded-2xl flex items-center gap-3">
+                               <Wind className="text-blue-400" size={18} />
                                <div>
-                                  <p className="text-[8px] uppercase font-black text-[#8B949E]">Wind</p>
-                                  <p className="text-sm font-bold text-white">{current?.windspeedKmph} <span className="text-[10px] opacity-50">km/h</span></p>
+                                  <p className="text-[8px] uppercase font-black text-muted leading-none mb-1">Wind</p>
+                                  <p className="text-xs font-bold text-foreground">{current?.windspeedKmph} <span className="text-[8px] opacity-50 font-normal">km/h</span></p>
                                </div>
                             </div>
-                            <div className="p-4 bg-[#0D1117] border border-[#30363D] rounded-2xl flex items-center gap-3">
-                               <Droplets className="text-blue-600" size={20} />
+                            <div className="p-3 bg-background border border-border rounded-2xl flex items-center gap-3">
+                               <Droplets className="text-blue-600" size={18} />
                                <div>
-                                  <p className="text-[8px] uppercase font-black text-[#8B949E]">Humidity</p>
-                                  <p className="text-sm font-bold text-white">{current?.humidity}%</p>
+                                  <p className="text-[8px] uppercase font-black text-muted leading-none mb-1">Humidity</p>
+                                  <p className="text-xs font-bold text-foreground">{current?.humidity}%</p>
                                </div>
                             </div>
-                            <div className="p-4 bg-[#0D1117] border border-[#30363D] rounded-2xl flex items-center gap-3">
-                               <Thermometer className="text-red-500" size={20} />
+                            <div className="p-3 bg-background border border-border rounded-2xl flex items-center gap-3">
+                               <Thermometer className="text-red-500" size={18} />
                                <div>
-                                  <p className="text-[8px] uppercase font-black text-[#8B949E]">Pressure</p>
-                                  <p className="text-sm font-bold text-white">{current?.pressure} <span className="text-[10px] opacity-50">hPa</span></p>
+                                  <p className="text-[8px] uppercase font-black text-muted leading-none mb-1">Pressure</p>
+                                  <p className="text-xs font-bold text-foreground">{current?.pressure} <span className="text-[8px] opacity-50 font-normal">hPa</span></p>
                                </div>
                             </div>
-                            <div className="p-4 bg-[#0D1117] border border-[#30363D] rounded-2xl flex items-center gap-3">
-                               <Cloud className="text-gray-400" size={20} />
+                            <div className="p-3 bg-background border border-border rounded-2xl flex items-center gap-3">
+                               <Cloud className="text-gray-400" size={18} />
                                <div>
-                                  <p className="text-[8px] uppercase font-black text-[#8B949E]">Cloud Cover</p>
-                                  <p className="text-sm font-bold text-white">{current?.cloudcover}%</p>
+                                  <p className="text-[8px] uppercase font-black text-muted leading-none mb-1">Clouds</p>
+                                  <p className="text-xs font-bold text-foreground">{current?.cloudcover}%</p>
                                </div>
                             </div>
                          </div>
@@ -198,19 +188,19 @@ export default function ClimatePage() {
                    </div>
 
                    {/* Forecast Row */}
-                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {weather?.weather?.map((day: any, idx: number) => (
-                        <div key={idx} className="glass p-6 rounded-2xl border border-[#30363D] bg-[#161B22]/30 flex flex-col items-center">
-                           <p className="text-[10px] font-black uppercase text-[#8B949E] mb-4 tracking-widest">{idx === 0 ? 'Today' : day.date}</p>
-                           <div className="p-4 bg-white/5 rounded-full mb-4">
+                        <div key={idx} className="glass p-4 rounded-2xl border border-border bg-surface/30 flex flex-col items-center">
+                           <p className="text-[8px] font-black uppercase text-muted mb-3 tracking-widest leading-none">{idx === 0 ? 'Today' : day.date}</p>
+                           <div className="p-3 bg-foreground/5 rounded-full mb-3">
                               {getWeatherIcon(day.hourly[4].weatherDesc[0].value)}
                            </div>
                            <div className="text-center">
-                              <p className="text-lg font-black text-white">{day.avgtempC}°C</p>
-                              <p className="text-[10px] text-blue-400 font-bold mb-2">{day.hourly[4].weatherDesc[0].value}</p>
-                              <div className="flex justify-center gap-4 text-[10px] font-mono">
-                                 <span className="text-red-400">H: {day.maxtempC}°</span>
-                                 <span className="text-blue-400">L: {day.mintempC}°</span>
+                              <p className="text-lg font-black text-foreground leading-none mb-1">{day.avgtempC}°C</p>
+                              <p className="text-[9px] text-blue-500 font-bold mb-2 uppercase">{day.hourly[4].weatherDesc[0].value}</p>
+                              <div className="flex justify-center gap-3 text-[9px] font-mono">
+                                 <span className="text-red-500/80">H: {day.maxtempC}°</span>
+                                 <span className="text-blue-500/80">L: {day.mintempC}°</span>
                               </div>
                            </div>
                         </div>

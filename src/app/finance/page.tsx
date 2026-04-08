@@ -1,6 +1,8 @@
 import { FinancialGuide } from '@/components/finance/FinancialGuide';
 import { AdBanner } from '@/components/layout/AdBanner';
-import { Wallet, Landmark, ShieldCheck } from 'lucide-react';
+import { Wallet, Landmark, ShieldCheck, TrendingUp, Sparkles } from 'lucide-react';
+import { ExpenseTracker } from '@/components/finance/ExpenseTracker';
+import { LiveProductPrices } from '@/components/finance/LiveProductPrices';
 
 export default function FinancePage() {
   return (
@@ -9,13 +11,28 @@ export default function FinancePage() {
         <div className="inline-flex items-center gap-2 px-3 py-1 bg-green-500/10 border border-green-500/20 rounded-full text-xs font-bold text-green-400 mb-6 uppercase tracking-widest">
            <ShieldCheck size={14} /> Safe Transactions
         </div>
-        <h1 className="text-4xl md:text-5xl font-black mb-4">Financial Guide</h1>
-        <p className="text-[#8B949E] text-lg max-w-2xl">
-          Managing money in Russia requires a strategy. Learn about P2P routes, MIR cards, and living costs in Russian rubles.
+        <h1 className="text-4xl md:text-5xl font-black mb-4">Financial <span className="text-green-500">Hub</span></h1>
+        <p className="text-muted text-lg max-w-2xl leading-relaxed">
+          Manage your money, track expenses, and view real-time market rates for essential products in Russia.
         </p>
       </header>
 
-      <FinancialGuide />
+      <section>
+         <div className="flex items-center gap-3 mb-6">
+            <TrendingUp size={24} className="text-green-500" />
+            <h2 className="text-2xl font-bold text-foreground">Spending Control</h2>
+         </div>
+         <ExpenseTracker />
+      </section>
+
+      <LiveProductPrices />
+
+      <div className="mt-20">
+        <h2 className="text-2xl font-bold text-foreground mb-8 flex items-center gap-3">
+           <Sparkles size={24} className="text-blue-500" /> Essential Financial Guides
+        </h2>
+        <FinancialGuide />
+      </div>
 
       <AdBanner slot="top" className="mt-20" />
       

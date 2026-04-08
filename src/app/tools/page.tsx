@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { OcrTranslator } from '@/components/tools/OcrTranslator';
 import { WardrobeAdvisor } from '@/components/tools/WardrobeAdvisor';
 import { HowToGuides } from '@/components/tools/HowToGuides';
+import { ClimateTracker } from '@/components/tools/ClimateTracker';
 import { AdBanner } from '@/components/layout/AdBanner';
 import { 
   Scan, 
@@ -19,6 +20,14 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 
 const TOOLS = [
+  { 
+    id: 'climate', 
+    name: 'Climate Status', 
+    desc: 'Real-time weather data and 3-day forecast across all major Russian cities.', 
+    icon: Sparkles, 
+    color: 'blue',
+    component: ClimateTracker
+  },
   { 
     id: 'ocr', 
     name: 'OCR Document Reader', 

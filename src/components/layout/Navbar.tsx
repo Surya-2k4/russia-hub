@@ -24,7 +24,6 @@ const NAV_ITEMS = [
   { href: '/universities', label: 'Programs', icon: GraduationCap },
   { href: '/finance', label: 'Money', icon: Wallet },
   { href: '/tools', label: 'Tools', icon: Wrench },
-  { href: '/climate', label: 'Climate', icon: Sparkles },
   { href: '/community', label: 'Community', icon: Map },
 ];
 
