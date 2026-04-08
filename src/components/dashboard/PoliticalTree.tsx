@@ -72,6 +72,7 @@ export function PoliticalTree() {
                 <button
                   key={idx}
                   onClick={() => setSelected(idx)}
+                  suppressHydrationWarning
                   className={`w-full text-left p-4 rounded-2xl border transition-all flex items-center justify-between group ${
                     selected === idx 
                       ? 'bg-red-600 border-red-500 shadow-xl scale-[1.02]' 

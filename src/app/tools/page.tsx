@@ -132,10 +132,11 @@ export default function ToolsPage() {
             {TOOLS.map((tool, idx) => (
                <motion.button
                   key={tool.id}
-                  onClick={() => tool.component() && setActiveTool(tool.id)}
+                  onClick={() => setActiveTool(tool.id)}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.1 }}
+                  suppressHydrationWarning
                   className={`flex flex-col text-left p-6 rounded-3xl border transition-all h-full group relative overflow-hidden ${activeTool === tool.id
                         ? 'bg-blue-600/10 border-blue-500 shadow-[0_0_30px_rgba(37,99,235,0.15)] ring-1 ring-blue-500/50'
                         : 'glass bg-surface/50 border-border hover:border-blue-500/50'

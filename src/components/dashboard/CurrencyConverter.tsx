@@ -89,6 +89,7 @@ export function CurrencyConverter() {
               value={amount}
               onChange={(e) => handleAmountChange(e.target.value)}
               placeholder="0.00"
+              suppressHydrationWarning
               className="bg-transparent text-foreground w-full outline-hidden font-mono text-xl font-bold"
             />
           </div>
@@ -97,6 +98,7 @@ export function CurrencyConverter() {
         <div className="flex justify-center -my-2 relative z-20">
           <button 
             onClick={handleSwap}
+            suppressHydrationWarning
             className="p-3 bg-blue-600 text-white rounded-full hover:scale-110 active:scale-95 transition-all shadow-lg hover:rotate-180"
           >
             <ArrowRightLeft size={16} />
