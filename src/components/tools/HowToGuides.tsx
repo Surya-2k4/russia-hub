@@ -17,6 +17,7 @@ const GUIDES = [
     title: 'Russian Driving License',
     icon: Car,
     color: 'blue',
+    url: 'https://гибдд.рф/',
     steps: [
       'Get a certified translation of your foreign license.',
       'Pass the medical exam (Spravka) at a registered clinic.',
@@ -31,6 +32,7 @@ const GUIDES = [
     title: 'Finding a Dorm/Apartment',
     icon: Home,
     color: 'emerald',
+    url: 'https://cian.ru',
     steps: [
       'Apply to university international office for a dorm spot.',
       'If finding private housing, use apps like Cian or Avito.',
@@ -45,6 +47,7 @@ const GUIDES = [
     title: 'Mandatory Medical Check',
     icon: ShieldCheck,
     color: 'orange',
+    url: 'https://mc.mos.ru/en/personal-account',
     steps: [
       'Mandatory for all students within 90 days of arrival.',
       'Visit the designated medical center for your city.',
@@ -59,6 +62,7 @@ const GUIDES = [
     title: 'Getting a SIM Card',
     icon: Settings,
     color: 'purple',
+    url: 'https://moskva.mts.ru/personal',
     steps: [
       'Visit any mobile shop (MTS, Beeline, Megafon, Tele2).',
       'Present your passport and migration card.',
@@ -124,9 +128,14 @@ export function HowToGuides() {
                <div className="flex items-center gap-2 text-[10px] text-[#8B949E]">
                   <span className="font-bold">Estimated Time:</span> {guide.time}
                </div>
-               <button className="flex items-center gap-1 text-[10px] font-bold text-blue-400 hover:text-white transition-colors">
+               <a 
+                 href={guide.url} 
+                 target="_blank" 
+                 rel="noopener noreferrer"
+                 className="flex items-center gap-1 text-[10px] font-bold text-blue-400 hover:text-white transition-colors"
+               >
                   READ FULL GUIDE <ChevronRight size={12} />
-               </button>
+               </a>
             </div>
           </motion.div>
         ))}

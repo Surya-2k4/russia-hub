@@ -1,23 +1,23 @@
-import { StudentMap } from '@/components/community/StudentMap';
+import { OnlineChat } from '@/components/community/OnlineChat';
 import { AdBanner } from '@/components/layout/AdBanner';
-import { Users, Map as MapIcon, Globe2, MessageSquare } from 'lucide-react';
+import { Users, Map as MapIcon, Globe2, MessageSquare, Sparkles } from 'lucide-react';
 
 export default function CommunityPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
       <header className="mb-12">
-        <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-500/10 border border-red-500/20 rounded-full text-xs font-bold text-red-400 mb-6 uppercase tracking-widest">
-           <Users size={14} /> 5,000+ Students Active
+        <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-500/10 border border-blue-500/20 rounded-full text-[10px] font-bold text-blue-400 mb-6 uppercase tracking-widest leading-none">
+           <Sparkles size={14} /> Live Global Chat
         </div>
-        <h1 className="text-4xl md:text-5xl font-black mb-4 tracking-tight">Expat Community</h1>
+        <h1 className="text-4xl md:text-5xl font-black mb-4 tracking-tight">Student <span className="text-blue-500">Community</span> Hub</h1>
         <p className="text-[#8B949E] text-lg max-w-2xl">
-          Connect with fellow international students across Russia. See university clusters, find roommates, and join local Telegram groups.
+          The ultimate real-time chat platform for international students in Russia. Meet peers, share tips, and find friends in your city.
         </p>
       </header>
 
       <div className="space-y-12">
          <section>
-            <StudentMap />
+            <OnlineChat />
          </section>
 
          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

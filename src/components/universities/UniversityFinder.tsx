@@ -19,23 +19,25 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export function UniversityFinder() {
   const [search, setSearch] = useState("");
-  const [cityFilter, setCityFilter] = useState("All");
+  const [regionFilter, setRegionFilter] = useState("All");
   const [languageFilter, setLanguageFilter] = useState("All");
   const [scraping, setScraping] = useState<string | null>(null);
   const [scrapedData, setScrapedData] = useState<Record<string, any>>({});
 
-  const cities = ["All", ...Array.from(new Set(UNIVERSITIES.map(u => u.city)))];
+  const regions = ["All", ...Array.from(new Set(UNIVERSITIES.map(u => u.region))).sort()];
   const languages = ["All", "English", "Russian", "Both"];
 
   const filteredUniversities = useMemo(() => {
     return UNIVERSITIES.filter(u => {
-      const matchesSearch = u.name.toLowerCase().includes(search.toLowerCase()) || 
-                           u.nameRu.toLowerCase().includes(search.toLowerCase());
-      const matchesCity = cityFilter === "All" || u.city === cityFilter;
+      const searchTerms = search.toLowerCase();
+      const matchesSearch = u.name.toLowerCase().includes(searchTerms) || 
+                           u.nameRu.toLowerCase().includes(searchTerms) ||
+                           u.city.toLowerCase().includes(searchTerms);
+      const matchesRegion = regionFilter === "All" || u.region === regionFilter;
       const matchesLang = languageFilter === "All" || u.languages.includes(languageFilter as any);
-      return matchesSearch && matchesCity && matchesLang;
+      return matchesSearch && matchesRegion && matchesLang;
     });
-  }, [search, cityFilter, languageFilter]);
+  }, [search, regionFilter, languageFilter]);
 
   const startScrape = async (uniId: string, uniName: string) => {
     setScraping(uniId);
@@ -59,28 +61,29 @@ export function UniversityFinder() {
   return (
     <div className="space-y-8">
       {/* Search & Filters Bar */}
-      <div className="glass p-6 rounded-2xl border border-[#30363D] shadow-xl sticky top-4 z-40">
+      <div className="glass p-6 rounded-2xl border border-[#30363D] shadow-xl sticky top-4 z-40 bg-[#0D1117]/80 backdrop-blur-xl">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="relative flex-1 group">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#8B949E] group-focus-within:text-blue-400 transition-colors" size={20} />
             <input
               type="text"
-              placeholder="Search by name (e.g. Lomonosov, RUDN)..."
+              placeholder="Search by name, city or abbreviation..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 bg-[#0D1117] border border-[#30363D] rounded-xl outline-hidden focus:border-blue-500 text-white transition-all shadow-inner"
+              className="w-full pl-12 pr-4 py-4 bg-[#0D1117] border border-[#30363D] rounded-xl outline-hidden focus:border-blue-500 text-white transition-all shadow-inner font-medium"
             />
           </div>
           
           <div className="flex gap-4">
-            <div className="relative min-w-[140px]">
-              <Filter className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8B949E]" size={14} />
+            <div className="relative min-w-[200px]">
+              <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8B949E]" size={14} />
               <select
-                value={cityFilter}
-                onChange={(e) => setCityFilter(e.target.value)}
-                className="w-full pl-10 pr-4 py-4 bg-[#0D1117] border border-[#30363D] rounded-xl outline-hidden focus:border-blue-500 text-white text-sm appearance-none cursor-pointer font-semibold"
+                value={regionFilter}
+                onChange={(e) => setRegionFilter(e.target.value)}
+                className="w-full pl-10 pr-4 py-4 bg-[#0D1117] border border-[#30363D] rounded-xl outline-hidden focus:border-blue-500 text-white text-sm appearance-none cursor-pointer font-semibold scrollbar-thin scrollbar-thumb-[#30363D]"
               >
-                {cities.map(city => <option key={city} value={city}>{city}</option>)}
+                <option value="All">All Regions / States</option>
+                {regions.filter(r => r !== "All").map(region => <option key={region} value={region}>{region}</option>)}
               </select>
             </div>
 
@@ -91,14 +94,18 @@ export function UniversityFinder() {
                 onChange={(e) => setLanguageFilter(e.target.value)}
                 className="w-full pl-10 pr-4 py-4 bg-[#0D1117] border border-[#30363D] rounded-xl outline-hidden focus:border-blue-500 text-white text-sm appearance-none cursor-pointer font-semibold"
               >
-                {languages.map(lang => <option key={lang} value={lang}>{lang}</option>)}
+                <option value="All">All Languages</option>
+                {languages.filter(l => l !== "All").map(lang => <option key={lang} value={lang}>{lang}</option>)}
               </select>
             </div>
           </div>
         </div>
         
         <div className="mt-4 flex items-center justify-between text-[#8B949E] text-xs px-1">
-           <p>Found {filteredUniversities.length} universities</p>
+           <p className="flex items-center gap-2">
+             <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+             Found <span className="text-white font-bold">{filteredUniversities.length}</span> Russian Universities
+           </p>
            <p className="flex items-center gap-1.5 font-bold"><TrendingDown size={12} className="text-blue-500" /> Sorted by Popularity</p>
         </div>
       </div>

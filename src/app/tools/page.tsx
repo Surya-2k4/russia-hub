@@ -152,6 +152,38 @@ export default function ToolsPage() {
          <AdBanner slot="inline" />
       </div>
 
+      {/* Must-have Mobile Apps Section */}
+      <section className="mt-20">
+         <div className="flex items-center justify-between mb-8">
+            <div>
+               <h3 className="text-2xl font-bold text-white tracking-tight">Must-have Mobile Apps</h3>
+               <p className="text-sm text-[#8B949E] mt-1">Essential applications for living and traveling in Russia.</p>
+            </div>
+         </div>
+         
+         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { name: "Yandex Go", desc: "The go-to app for Taxis, Food Delivery, and Groceries.", category: "Transport", icon: "🚕" },
+              { name: "2GIS", desc: "Best offline maps and building entrance finder in Russia.", category: "Navigation", icon: "🗺️" },
+              { name: "Yandex Maps", desc: "Live public transport tracking (Bus/Tram/Metro).", category: "Transport", icon: "🚌" },
+              { name: "Tinkoff / Sber", desc: "Essential for P2P transfers and contactless payments.", category: "Finance", icon: "💳" },
+              { name: "Ozon / Wildberries", desc: "The Amazon of Russia. Everything delivered in 24h.", category: "Shopping", icon: "📦" },
+              { name: "Telegram", desc: "The primary communication tool for everyone in Russia.", category: "Social", icon: "💬" }
+            ].map((app, idx) => (
+              <div key={idx} className="glass p-6 rounded-2xl border border-[#30363D] hover:border-blue-500/30 transition-all flex items-center gap-4 group">
+                 <div className="text-3xl bg-white/5 w-12 h-12 flex items-center justify-center rounded-xl border border-white/10 group-hover:scale-110 transition-transform">
+                    {app.icon}
+                 </div>
+                 <div>
+                    <span className="text-[8px] font-black uppercase text-blue-400 tracking-widest">{app.category}</span>
+                    <h4 className="text-sm font-bold text-white mb-1">{app.name}</h4>
+                    <p className="text-xs text-[#8B949E] leading-tight">{app.desc}</p>
+                 </div>
+              </div>
+            ))}
+         </div>
+      </section>
+
       {/* Static Language Section */}
       <section className="mt-20 glass p-8 rounded-3xl border border-[#30363D] bg-[#161B22]/30 relative overflow-hidden">
          <div className="absolute bottom-0 right-0 -mr-10 -mb-10 w-40 h-40 bg-purple-500/5 blur-[50px] rounded-full" />

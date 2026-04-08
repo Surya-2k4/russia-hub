@@ -14,22 +14,18 @@ export function CurrencyConverter() {
   const updateRate = async () => {
     setLoading(true);
     try {
-      const apiKey = process.env.NEXT_PUBLIC_CURRENCY_API_KEY;
-      if (!apiKey || apiKey === 'your_key_here') {
-          // Mock fetch delay
-          await new Promise(r => setTimeout(r, 1000));
-          setLastUpdated(new Date().toLocaleTimeString());
-          setLoading(false);
-          return;
-      }
-      const response = await fetch(`https://api.freecurrencyapi.com/v1/latest?apikey=${apiKey}&currencies=RUB&base_currency=INR`);
+      // Using a more reliable free endpoint that doesn't strictly require a key for v4
+      const response = await fetch(`https://api.exchangerate-api.com/v4/latest/INR`);
       const data = await response.json();
-      if (data.data?.RUB) {
-        setRate(data.data.RUB);
+      if (data.rates?.RUB) {
+        setRate(data.rates.RUB);
         setLastUpdated(new Date().toLocaleTimeString());
       }
     } catch (error) {
       console.error("Failed to fetch rates:", error);
+      // Fallback if API fails
+      setRate(1.15); 
+      setLastUpdated("Offline (using estimate)");
     } finally {
       setLoading(false);
     }
