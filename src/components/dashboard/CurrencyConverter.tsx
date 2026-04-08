@@ -1,20 +1,23 @@
 "use client";
 
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import { IndianRupee, RussianRuble, ArrowRightLeft, RefreshCw, TrendingUp } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { IndianRupee, RussianRuble, ArrowRightLeft, RefreshCw, TrendingUp, ChevronDown } from 'lucide-react';
+
+type Currency = 'INR' | 'RUB';
 
 export function CurrencyConverter() {
-  const [inr, setInr] = useState<number>(1000);
-  const [rub, setRub] = useState<number>(0);
-  const [rate, setRate] = useState<number>(1.12); // Default fallback rate
+  const [amount, setAmount] = useState<string>("1000");
+  const [from, setFrom] = useState<Currency>('INR');
+  const [to, setTo] = useState<Currency>('RUB');
+  const [result, setResult] = useState<number>(0);
+  const [rate, setRate] = useState<number>(1.12);
   const [loading, setLoading] = useState<boolean>(true);
   const [lastUpdated, setLastUpdated] = useState<string>("");
 
   const updateRate = async () => {
     setLoading(true);
     try {
-      // Using a more reliable free endpoint that doesn't strictly require a key for v4
       const response = await fetch(`https://api.exchangerate-api.com/v4/latest/INR`);
       const data = await response.json();
       if (data.rates?.RUB) {
@@ -23,7 +26,6 @@ export function CurrencyConverter() {
       }
     } catch (error) {
       console.error("Failed to fetch rates:", error);
-      // Fallback if API fails
       setRate(1.15); 
       setLastUpdated("Offline (using estimate)");
     } finally {
@@ -36,75 +38,94 @@ export function CurrencyConverter() {
   }, []);
 
   useEffect(() => {
-    setRub(Number((inr * rate).toFixed(2)));
-  }, [inr, rate]);
+    const val = parseFloat(amount) || 0;
+    if (from === 'INR') {
+      setResult(Number((val * rate).toFixed(2)));
+    } else {
+      setResult(Number((val / rate).toFixed(2)));
+    }
+  }, [amount, rate, from]);
+
+  const handleSwap = () => {
+    setFrom(to);
+    setTo(from);
+  };
+
+  const handleAmountChange = (val: string) => {
+    // If empty or starts with 0 (but not 0.), replace 0
+    if (val === "" || (val.startsWith("0") && val.length > 1 && !val.startsWith("0."))) {
+      setAmount(val.replace(/^0+/, ''));
+    } else {
+      setAmount(val);
+    }
+  };
 
   return (
-    <div className="glass p-6 rounded-2xl border border-[#30363D] shadow-xl relative overflow-hidden">
+    <div className="glass p-6 rounded-3xl border border-border shadow-2xl relative overflow-hidden transition-all hover:border-blue-500/30">
       <div className="flex justify-between items-start mb-6">
         <div>
-          <h3 className="text-xl font-bold text-white flex items-center gap-2">
-            Currency Converter
-            <TrendingUp size={16} className="text-green-500" />
+          <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
+            Smart Converter
+            <TrendingUp size={16} className="text-green-500 animate-pulse" />
           </h3>
-          <p className="text-[#8B949E] text-xs mt-1">Live INR to RUB exchange rates.</p>
+          <p className="text-muted text-[10px] font-bold uppercase tracking-widest mt-1">Live Exchange Hub</p>
         </div>
         <button 
           onClick={updateRate} 
           disabled={loading}
-          suppressHydrationWarning
-          className={`p-2 rounded-lg bg-[#0D1117] border border-[#30363D] text-[#8B949E] hover:text-white transition-all ${loading ? 'animate-spin' : ''}`}
+          className={`p-2 rounded-xl bg-surface border border-border text-muted hover:text-foreground transition-all ${loading ? 'animate-spin' : ''}`}
         >
           <RefreshCw size={18} />
         </button>
       </div>
 
-      <div className="space-y-6 relative z-10">
-        {/* INR Input */}
+      <div className="space-y-4 relative z-10">
         <div className="group">
-          <label className="text-[10px] uppercase font-bold text-[#8B949E] block mb-2 px-1">Amount (INR)</label>
-          <div className="flex items-center gap-3 bg-[#0D1117] p-4 rounded-xl border border-[#30363D] focus-within:border-blue-500 transition-all">
-            <IndianRupee className="text-blue-500" size={20} />
+          <label className="text-[10px] uppercase font-black text-muted block mb-2 px-1 tracking-widest">Base Amount ({from})</label>
+          <div className="flex items-center gap-3 bg-background p-4 rounded-2xl border border-border focus-within:border-blue-500 transition-all shadow-inner">
+            {from === 'INR' ? <IndianRupee className="text-blue-500" size={20} /> : <div className="w-5 h-3 rounded-xs bg-gradient-to-b from-white via-blue-700 to-red-600" />}
             <input
               type="number"
-              value={inr}
-              onChange={(e) => setInr(Number(e.target.value))}
+              value={amount}
+              onChange={(e) => handleAmountChange(e.target.value)}
               placeholder="0.00"
-              suppressHydrationWarning
-              className="bg-transparent text-white w-full outline-hidden font-mono text-lg"
+              className="bg-transparent text-foreground w-full outline-hidden font-mono text-xl font-bold"
             />
           </div>
         </div>
 
-        <div className="flex justify-center -my-3 relative z-20">
-          <div className="p-2 bg-[#F0B429] rounded-full text-black shadow-[0_0_15px_rgba(240,180,41,0.5)] border-4 border-[#0D1117]">
+        <div className="flex justify-center -my-2 relative z-20">
+          <button 
+            onClick={handleSwap}
+            className="p-3 bg-blue-600 text-white rounded-full hover:scale-110 active:scale-95 transition-all shadow-lg hover:rotate-180"
+          >
             <ArrowRightLeft size={16} />
-          </div>
+          </button>
         </div>
 
-        {/* RUB Result */}
         <div className="group">
-          <label className="text-[10px] uppercase font-bold text-[#8B949E] block mb-2 px-1">Result (RUB)</label>
-          <div className="flex items-center gap-3 bg-[#0D1117]/50 p-4 rounded-xl border border-[#30363D] opacity-100 transition-all">
-            <div className="w-5 h-5 rounded-sm bg-gradient-to-b from-white via-blue-700 to-red-600 flex items-center justify-center p-0.5" />
-            <div className="flex-1 font-mono text-xl font-bold text-[#F0B429]">
-               {rub.toLocaleString()} <span className="text-xs text-[#8B949E]">₽</span>
+          <label className="text-[10px] uppercase font-black text-muted block mb-2 px-1 tracking-widest">Converted Result ({to})</label>
+          <div className="flex items-center gap-3 bg-surface p-4 rounded-2xl border border-border transition-all">
+            {to === 'INR' ? <IndianRupee className="text-muted opacity-50" size={20} /> : <div className="w-5 h-3 rounded-xs bg-gradient-to-b from-white via-blue-700 to-red-600 opacity-50" />}
+            <div className="flex-1 font-mono text-xl font-black text-foreground">
+               {result.toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-xs text-muted font-normal ml-2">{to}</span>
             </div>
           </div>
         </div>
 
-        <div className="flex justify-between items-center pt-2">
-            <span className="text-xs text-[#8B949E]">
-              Rate: <span className="text-white font-mono">1 INR = {rate.toFixed(4)} RUB</span>
-            </span>
-            <span className="text-[10px] text-[#8B949E] opacity-50">
-              {loading ? 'Updating...' : `Updated: ${lastUpdated}`}
-            </span>
+        <div className="flex flex-col gap-2 pt-2">
+            <div className="flex justify-between items-center text-[10px] font-bold text-muted border-t border-border/50 pt-4">
+               <span>
+                  1 INR = <span className="text-blue-500">{rate.toFixed(4)}</span> RUB
+               </span>
+               <span className="bg-green-500/10 text-green-500 px-2 py-0.5 rounded-full border border-green-500/20">
+                  {loading ? 'Fetching...' : `Live: ${lastUpdated}`}
+               </span>
+            </div>
         </div>
       </div>
       
-      {/* Decorative Gradient Blob */}
-      <div className="absolute -bottom-12 -right-12 w-32 h-32 bg-blue-600/10 blur-[60px] rounded-full" />
+      <div className="absolute -bottom-12 -right-12 w-32 h-32 bg-blue-600/5 blur-[60px] rounded-full" />
     </div>
   );
 }

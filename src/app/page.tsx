@@ -1,7 +1,17 @@
 import { AdBanner } from '@/components/layout/AdBanner';
 import { VisaProgress } from '@/components/dashboard/VisaProgress';
 import { CurrencyConverter } from '@/components/dashboard/CurrencyConverter';
-import { Plane, ArrowUpRight, GraduationCap, Map as MapIcon, Wallet } from 'lucide-react';
+import { PopulationStats } from '@/components/dashboard/PopulationStats';
+import { PoliticalTree } from '@/components/dashboard/PoliticalTree';
+import { 
+  Plane, 
+  ArrowUpRight, 
+  GraduationCap, 
+  Users, 
+  Wallet,
+  MessagesSquare,
+  Globe
+} from 'lucide-react';
 import Link from 'next/link';
 
 export default function Home() {
@@ -36,39 +46,44 @@ export default function Home() {
 
       <AdBanner slot="top" />
 
-      {/* Overview Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-         <div className="lg:col-span-2 space-y-8">
+      {/* Main Content Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
+         {/* Center Content */}
+         <div className="lg:col-span-3 space-y-8">
             <VisaProgress />
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Secondary Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <Link href="/universities" className="glass p-6 rounded-2xl border border-border group hover:border-blue-500 transition-all relative overflow-hidden h-full">
                    <div className="flex justify-between items-start mb-6">
                       <div className="p-3 bg-blue-500/10 rounded-xl text-blue-500"><GraduationCap size={24} /></div>
                       <ArrowUpRight className="text-border group-hover:text-blue-500 transition-colors" size={20} />
                    </div>
-                   <h3 className="text-xl font-bold text-foreground mb-2">University Finder</h3>
-                   <p className="text-sm text-muted">Browse through 30+ top-tier Russian medical and technical universities.</p>
+                   <h3 className="text-xl font-bold text-foreground mb-2">Uni Finder</h3>
+                   <p className="text-xs text-muted">Browse through top-tier Russian medical and technical schools.</p>
                    <div className="absolute -bottom-6 -right-6 text-blue-500/5 group-hover:text-blue-500/10 transition-colors">
-                      <GraduationCap size={120} />
+                      <GraduationCap size={100} />
                    </div>
                 </Link>
 
                 <Link href="/community" className="glass p-6 rounded-2xl border border-border group hover:border-red-500 transition-all relative overflow-hidden h-full">
                    <div className="flex justify-between items-start mb-6">
-                      <div className="p-3 bg-red-500/10 rounded-xl text-red-500"><MapIcon size={24} /></div>
+                      <div className="p-3 bg-red-500/10 rounded-xl text-red-500"><MessagesSquare size={24} /></div>
                       <ArrowUpRight className="text-border group-hover:text-red-500 transition-colors" size={20} />
                    </div>
-                   <h3 className="text-xl font-bold text-foreground mb-2">Student Map</h3>
-                   <p className="text-sm text-muted">See where other international students are located across the motherland.</p>
+                   <h3 className="text-xl font-bold text-foreground mb-2">Community</h3>
+                   <p className="text-xs text-muted">Join real-time chat hubs and connect with students across Russia.</p>
                    <div className="absolute -bottom-6 -right-6 text-red-500/5 group-hover:text-red-500/10 transition-colors">
-                      <MapIcon size={120} />
+                      <Users size={100} />
                    </div>
                 </Link>
+
+                <PopulationStats />
             </div>
+
+            <PoliticalTree />
          </div>
 
+         {/* Sidebar */}
          <div className="space-y-8 h-full">
             <CurrencyConverter />
             
@@ -77,14 +92,14 @@ export default function Home() {
                <h3 className="text-lg font-bold text-foreground mb-2 tracking-tight">Quick Finance Tips</h3>
                <ul className="space-y-3">
                   <li className="text-xs text-muted flex items-center gap-2">
-                     <div className="w-1 h-1 bg-green-500 rounded-full" /> Sberbank and Tinkoff are the safest bets for apps.
+                     <div className="w-1.5 h-1.5 bg-green-500 rounded-full shrink-0" /> Sber and Tinkoff are gold standards for mobile banking.
                   </li>
                   <li className="text-xs text-muted flex items-center gap-2">
-                     <div className="w-1 h-1 bg-green-500 rounded-full" /> Use P2P for the best conversion rates (INR ↔ USDT ↔ RUB).
+                     <div className="w-1.5 h-1.5 bg-green-500 rounded-full shrink-0" /> Use P2P (Binance/Bybit) for instant INR ↔ RUB transfers.
                   </li>
                </ul>
-               <Link href="/finance" className="mt-6 text-xs font-bold text-gold flex items-center gap-2 hover:underline">
-                  Full Financial Guide <ArrowUpRight size={14} />
+               <Link href="/tools" className="mt-8 py-3 w-full bg-background border border-border rounded-xl text-[10px] font-black uppercase text-gold flex items-center justify-center gap-2 hover:bg-gold hover:text-black transition-all">
+                  Financial Tool Hub <ArrowUpRight size={14} />
                </Link>
             </div>
             

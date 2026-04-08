@@ -21,30 +21,39 @@ export default function BureaucracyPage() {
             <AdBanner slot="inline" className="mt-12" />
          </div>
 
-         <aside className="space-y-8">
-            <div className="glass p-6 rounded-2xl border border-[#30363D]">
-               <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+          <aside className="space-y-8">
+            <div className="glass p-6 rounded-2xl border border-border group hover:border-blue-500/30 transition-all">
+               <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
                   <FileText size={18} className="text-blue-500" /> Need Help?
                </h3>
-               <p className="text-xs text-[#8B949E] leading-relaxed mb-6">
-                 Bureaucracy can be overwhelming. Check your university&apos;s International Office website for specialized local forms.
+               <p className="text-xs text-muted leading-relaxed mb-6">
+                 Bureaucracy can be overwhelming. Join our community support or contact the university international office.
                </p>
-               <button className="w-full py-3 bg-[#0D1117] border border-[#30363D] rounded-xl text-xs font-bold text-white hover:border-blue-500 transition-all">
-                  Contact Support
-               </button>
+               <a 
+                 href="https://t.me/russia_student_support" 
+                 target="_blank"
+                 className="w-full py-3 bg-surface border border-border rounded-xl text-xs font-bold text-foreground hover:bg-blue-600 hover:text-white flex items-center justify-center gap-2 transition-all shadow-xl"
+               >
+                  Contact Community Support
+               </a>
             </div>
 
-            <div className="glass p-6 rounded-2xl border border-[#30363D]">
-               <h3 className="text-lg font-bold text-white mb-4 flex items-center gap-2">
+            <div className="glass p-6 rounded-2xl border border-border group hover:border-red-500/30 transition-all">
+               <h3 className="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
                   <MapPin size={18} className="text-red-500" /> OFMS Branch
                </h3>
-               <p className="text-xs text-[#8B949E] leading-relaxed">
+               <p className="text-xs text-muted leading-relaxed">
                  You must visit your local OFMS (Migration Office) for Fingerprinting and Registration.
                </p>
-               <div className="mt-4 flex flex-col gap-2">
-                 <a href="#" className="flex items-center gap-2 text-[10px] text-blue-400 font-bold hover:underline">
-                    <Search size={12} /> Find Nearest Branch
+               <div className="mt-6 flex flex-col gap-3">
+                 <a 
+                   href="https://www.google.com/maps/search/Migration+Center+Russia" 
+                   target="_blank"
+                   className="flex items-center justify-center gap-2 py-3 bg-background border border-border rounded-xl text-[10px] text-red-500 font-bold hover:bg-red-500 hover:text-white transition-all shadow-lg"
+                 >
+                    <Search size={14} /> Search Near Me
                  </a>
+                 <p className="text-[8px] text-muted text-center opacity-50 uppercase font-black tracking-tighter">Powered by Google/Yandex Maps</p>
                </div>
             </div>
 

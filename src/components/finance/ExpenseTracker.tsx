@@ -155,12 +155,18 @@ export function ExpenseTracker() {
                   </div>
                 </div>
                 <div className="flex gap-2">
-                   <button onClick={downloadCSV} className="p-2 bg-background border border-border rounded-lg text-muted hover:text-green-500 transition-colors" title="Export as Excel">
-                      <FileSpreadsheet size={18} />
-                   </button>
-                   <button onClick={downloadPDF} className="p-2 bg-background border border-border rounded-lg text-muted hover:text-red-500 transition-colors" title="Export as PDF">
-                      <FileText size={18} />
-                   </button>
+                   <div className="flex flex-col items-center gap-1">
+                      <span className="text-[8px] font-black text-green-500 uppercase leading-none">csv</span>
+                      <button onClick={downloadCSV} className="p-2 bg-background border border-border rounded-lg text-muted hover:text-green-500 transition-colors shadow-sm" title="Export as Excel">
+                         <FileSpreadsheet size={18} />
+                      </button>
+                   </div>
+                   <div className="flex flex-col items-center gap-1">
+                      <span className="text-[8px] font-black text-red-500 uppercase leading-none">pdf</span>
+                      <button onClick={downloadPDF} className="p-2 bg-background border border-border rounded-lg text-muted hover:text-red-500 transition-colors shadow-sm" title="Export as PDF">
+                         <FileText size={18} />
+                      </button>
+                   </div>
                 </div>
              </div>
 

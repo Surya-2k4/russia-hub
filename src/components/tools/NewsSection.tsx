@@ -45,6 +45,23 @@ export function NewsSection() {
     return () => clearInterval(interval);
   }, []);
 
+  const handleShare = async (item: any) => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: item.title,
+          text: item.description,
+          url: item.link
+        });
+      } catch (err) {
+        console.log("Share failed", err);
+      }
+    } else {
+      navigator.clipboard.writeText(item.link);
+      alert("Link copied to clipboard!");
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between px-2">
@@ -71,7 +88,7 @@ export function NewsSection() {
          <AnimatePresence mode="popLayout">
             {loading ? (
               Array(6).fill(0).map((_, i) => (
-                <div key={i} className="glass p-6 rounded-3xl border border-border bg-surface/50 h-[240px] animate-shimmer" />
+                <div key={i} className="glass p-6 rounded-3xl border border-border bg-surface/50 h-[320px] animate-shimmer" />
               ))
             ) : (
               news.map((item, idx) => (
@@ -80,35 +97,54 @@ export function NewsSection() {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   whileHover={{ y: -5 }}
-                  className="glass p-6 rounded-3xl border border-border bg-surface/50 flex flex-col justify-between group h-full"
+                  className="glass rounded-3xl border border-border bg-surface/50 flex flex-col group h-full overflow-hidden"
                 >
-                   <div>
-                      <div className="flex items-center justify-between mb-4">
-                         <span className="text-[10px] font-black uppercase text-blue-500 tracking-widest flex items-center gap-2">
-                            <Clock size={10} /> {new Date(item.pubDate).toLocaleDateString()}
+                   {/* News Image */}
+                   <div className="relative h-48 overflow-hidden bg-background">
+                      <img 
+                        src={item.thumbnail || item.enclosure?.link || `https://source.unsplash.com/featured/?russia,news,city&${idx}`} 
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-80 group-hover:opacity-100" 
+                        alt={item.title} 
+                      />
+                      <div className="absolute top-4 left-4">
+                         <span className="text-[8px] font-black uppercase bg-blue-600 text-white px-2 py-1 rounded-md shadow-lg tracking-widest">
+                            RUSSIA HUB
                          </span>
-                         <Globe size={14} className="text-muted opacity-30" />
                       </div>
-                      <h4 className="font-bold text-foreground leading-snug mb-3 group-hover:text-blue-500 transition-colors line-clamp-3">
-                         {item.title}
-                      </h4>
-                      <p className="text-[10px] text-muted line-clamp-2 leading-relaxed mb-4">
-                         {item.description?.replace(/<[^>]*>?/gm, '')}
-                      </p>
                    </div>
-                   
-                   <div className="flex items-center justify-between pt-4 border-t border-border/50">
-                      <a 
-                        href={item.link} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-[10px] font-black uppercase text-blue-500 flex items-center gap-1 hover:gap-2 transition-all"
-                      >
-                         Read Full Story <ExternalLink size={12} />
-                      </a>
-                      <button className="p-2 text-muted hover:text-foreground transition-all">
-                         <Share2 size={14} />
-                      </button>
+
+                   <div className="p-6 flex flex-col justify-between flex-1">
+                      <div>
+                         <div className="flex items-center justify-between mb-4">
+                            <span className="text-[10px] font-black uppercase text-blue-500 tracking-widest flex items-center gap-2">
+                               <Clock size={10} /> {new Date(item.pubDate).toLocaleDateString()}
+                            </span>
+                            <Globe size={14} className="text-muted opacity-30" />
+                         </div>
+                         <h4 className="font-bold text-foreground leading-tight mb-3 group-hover:text-blue-500 transition-colors line-clamp-2">
+                            {item.title}
+                         </h4>
+                         <p className="text-[10px] text-muted line-clamp-2 leading-relaxed mb-4 opacity-70">
+                            {item.description?.replace(/<[^>]*>?/gm, '')}
+                         </p>
+                      </div>
+                      
+                      <div className="flex items-center justify-between pt-4 border-t border-border/50">
+                         <a 
+                           href={item.link} 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           className="text-[10px] font-black uppercase text-blue-500 flex items-center gap-1 hover:gap-2 transition-all"
+                         >
+                            Read Full Story <ExternalLink size={12} />
+                         </a>
+                         <button 
+                           onClick={() => handleShare(item)}
+                           className="p-2 text-muted hover:text-foreground transition-all hover:bg-white/5 rounded-lg"
+                         >
+                            <Share2 size={14} />
+                         </button>
+                      </div>
                    </div>
                 </motion.div>
               ))

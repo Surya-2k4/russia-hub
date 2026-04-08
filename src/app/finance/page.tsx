@@ -1,6 +1,7 @@
 import { FinancialGuide } from '@/components/finance/FinancialGuide';
+import { RubleVolatility } from '@/components/finance/RubleVolatility';
 import { AdBanner } from '@/components/layout/AdBanner';
-import { Wallet, Landmark, ShieldCheck, TrendingUp, Sparkles } from 'lucide-react';
+import { Wallet, Landmark, ShieldCheck, TrendingUp, Sparkles, BarChart3 } from 'lucide-react';
 import { ExpenseTracker } from '@/components/finance/ExpenseTracker';
 import { LiveProductPrices } from '@/components/finance/LiveProductPrices';
 
@@ -16,6 +17,14 @@ export default function FinancePage() {
           Manage your money, track expenses, and view real-time market rates for essential products in Russia.
         </p>
       </header>
+
+      <section className="mb-20">
+         <div className="flex items-center gap-3 mb-8">
+            <BarChart3 size={24} className="text-blue-500" />
+            <h2 className="text-2xl font-bold text-foreground">Volatility Index</h2>
+         </div>
+         <RubleVolatility />
+      </section>
 
       <section>
          <div className="flex items-center gap-3 mb-6">
