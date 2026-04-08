@@ -96,65 +96,66 @@ export function NewsSection() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
          <AnimatePresence mode="popLayout">
             {loading ? (
               Array(6).fill(0).map((_, i) => (
-                <div key={i} className="glass p-6 rounded-3xl border border-border bg-surface/50 h-[320px] animate-shimmer" />
+                <div key={i} className="glass p-6 rounded-3xl border border-border bg-surface/50 h-[400px] animate-shimmer" />
               ))
             ) : (
               news.map((item, idx) => (
                 <motion.div 
                   key={idx}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  whileHover={{ y: -5 }}
-                  className="glass rounded-3xl border border-border bg-surface/50 flex flex-col group h-full overflow-hidden"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  whileHover={{ y: -8 }}
+                  className="relative h-[450px] rounded-[2.5rem] border border-border bg-surface/50 overflow-hidden group shadow-2xl"
                 >
-                   {/* News Image */}
-                   <div className="relative h-48 overflow-hidden bg-background">
+                   {/* Background Image Layer */}
+                   <div className="absolute inset-0 z-0">
                       <img 
                         src={item.displayImg} 
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-80 group-hover:opacity-100" 
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 opacity-60" 
                         alt={item.title} 
                       />
-                      <div className="absolute top-4 left-4">
-                         <span className="text-[8px] font-black uppercase bg-blue-600 text-white px-2 py-1 rounded-md shadow-lg tracking-widest">
-                            RUSSIA HUB
-                         </span>
-                      </div>
+                      {/* Gradient Overlays */}
+                      <div className="absolute inset-0 bg-linear-to-b from-background/20 via-background/60 to-background" />
+                      <div className="absolute inset-0 bg-linear-to-r from-background/40 to-transparent opacity-50" />
                    </div>
 
-                   <div className="p-6 flex flex-col justify-between flex-1">
-                      <div>
-                         <div className="flex items-center justify-between mb-4">
-                            <span className="text-[10px] font-black uppercase text-blue-500 tracking-widest flex items-center gap-2">
+                   {/* Content Layer */}
+                   <div className="relative z-10 h-full p-8 flex flex-col justify-end">
+                      <div className="mb-4">
+                         <div className="flex items-center gap-2 mb-3">
+                            <span className="text-[10px] font-black uppercase bg-blue-600 text-white px-3 py-1 rounded-full shadow-lg tracking-widest leading-none">
+                               Central Press
+                            </span>
+                            <span className="text-[10px] font-black uppercase text-muted tracking-widest flex items-center gap-1.5 opacity-60">
                                <Clock size={10} /> {new Date(item.pubDate).toLocaleDateString()}
                             </span>
-                            <Globe size={14} className="text-muted opacity-30" />
                          </div>
-                         <h4 className="font-bold text-foreground leading-tight mb-3 group-hover:text-blue-500 transition-colors line-clamp-2">
+                         <h4 className="text-xl font-black text-foreground leading-tight mb-4 group-hover:text-blue-500 transition-colors line-clamp-3">
                             {item.title}
                          </h4>
-                         <p className="text-[10px] text-muted line-clamp-2 leading-relaxed mb-4 opacity-70">
+                         <p className="text-sm text-muted line-clamp-2 leading-relaxed opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
                             {item.description?.replace(/<[^>]*>?/gm, '')}
                          </p>
                       </div>
                       
-                      <div className="flex items-center justify-between pt-4 border-t border-border/50">
+                      <div className="flex items-center justify-between pt-6 mt-4 border-t border-white/10">
                          <a 
                            href={item.link} 
                            target="_blank" 
                            rel="noopener noreferrer"
-                           className="text-[10px] font-black uppercase text-blue-500 flex items-center gap-1 hover:gap-2 transition-all"
+                           className="inline-flex items-center gap-2 py-3 px-6 bg-foreground text-background rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-blue-600 hover:text-white transition-all shadow-xl"
                          >
-                            Read Full Story <ExternalLink size={12} />
+                            Read Full Report <ExternalLink size={14} />
                          </a>
                          <button 
                            onClick={() => handleShare(item)}
-                           className="p-2 text-muted hover:text-foreground transition-all hover:bg-white/5 rounded-lg"
+                           className="p-3 text-muted hover:text-foreground transition-all hover:bg-white/10 rounded-2xl glass"
                          >
-                            <Share2 size={14} />
+                            <Share2 size={18} />
                          </button>
                       </div>
                    </div>

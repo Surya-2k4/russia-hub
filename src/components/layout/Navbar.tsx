@@ -127,22 +127,32 @@ export function Navbar() {
           </Link>
 
           {/* Desktop/Bottom Nav Items */}
-          <div className="flex items-center gap-4 md:gap-8 flex-1 justify-around md:justify-end">
-            <ul className="flex justify-around md:justify-end md:gap-8 items-center h-full">
+          <div className="flex items-center flex-1 md:justify-end">
+            <ul className="grid grid-cols-6 w-full md:flex md:gap-8 items-center h-full pb-safe">
               {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
                 const isActive = pathname === href;
                 return (
-                  <li key={href} className="relative h-full flex items-center">
+                  <li key={href} className="relative h-full flex items-center justify-center">
                     <Link
                       href={href}
-                      className={`flex flex-col md:flex-row items-center gap-1 md:gap-2 px-2 py-1 transition-all group ${
-                        isActive ? 'text-gold' : 'text-muted hover:text-foreground'
+                      className={`flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 px-1 py-1 transition-all group w-full ${
+                        isActive ? 'text-blue-500 md:text-gold' : 'text-muted hover:text-foreground'
                       }`}
                     >
-                      <Icon size={20} className={isActive ? 'scale-110' : 'group-hover:scale-110 transition-transform'} />
-                      <span className="text-[9px] md:text-sm font-bold tracking-tight md:tracking-normal">{label}</span>
+                      <div className="relative">
+                        <Icon size={18} className={`${isActive ? 'scale-110 text-blue-500' : 'group-hover:scale-110 transition-transform'}`} />
+                        {isActive && (
+                          <motion.div 
+                             layoutId="nav-dot"
+                             className="absolute -top-1 -right-1 w-1.5 h-1.5 bg-blue-500 rounded-full md:hidden"
+                          />
+                        )}
+                      </div>
+                      <span className="text-[8px] md:text-sm font-black md:font-bold tracking-tighter md:tracking-normal uppercase md:capitalize text-center">
+                        {label}
+                      </span>
                       {isActive && (
-                        <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold md:bg-accent rounded-full scale-x-100" />
+                        <span className="hidden md:block absolute bottom-0 left-0 right-0 h-0.5 bg-gold md:bg-accent rounded-full scale-x-100" />
                       )}
                     </Link>
                   </li>
