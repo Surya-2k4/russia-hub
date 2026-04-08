@@ -18,11 +18,24 @@ export default function Home() {
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
       {/* Hero Section */}
-      <section className="relative py-12 mb-12 flex flex-col items-center text-center">
+      <section className="relative py-16 mb-12 flex flex-col items-center text-center rounded-[3rem] overflow-hidden">
+         {/* Background Image Layer */}
+         <div 
+           className="absolute inset-0 -z-20 opacity-20 pointer-events-none"
+           style={{
+             backgroundImage: 'url("https://images.unsplash.com/photo-1547448415-e9f5b28e570d?q=80&w=2000&auto=format&fit=crop")',
+             backgroundSize: 'cover',
+             backgroundPosition: 'center',
+             backgroundAttachment: 'fixed'
+           }}
+         />
+         {/* Blend / Overlay Layer */}
+         <div className="absolute inset-0 -z-10 bg-linear-to-b from-background/0 via-background/40 to-background" />
+         
          <div className="absolute top-0 right-0 -z-10 w-64 h-64 bg-blue-600/10 blur-[100px] rounded-full" />
          <div className="absolute bottom-0 left-0 -z-10 w-96 h-96 bg-red-600/5 blur-[120px] rounded-full" />
          
-         <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs font-bold text-blue-400 mb-6 animate-shimmer">
+         <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs font-bold text-blue-400 mb-6 animate-shimmer relative z-20">
            <Plane size={14} className="rotate-45" /> New Session 2024-25 Opening Soon
          </div>
          

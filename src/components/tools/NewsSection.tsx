@@ -20,19 +20,31 @@ export function NewsSection() {
   const fetchNews = async () => {
     setLoading(true);
     try {
-      // Using RSS2JSON to fetch TASS English news feed
       const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=https://tass.com/rss/v2.xml`);
       const data = await response.json();
       if (data.status === 'ok') {
-        setNews(data.items.slice(0, 6));
+        const enrichedItems = data.items.map((item: any, idx: number) => {
+          // Attempt to extract img from description if thumbnail is missing
+          let img = item.thumbnail || item.enclosure?.link;
+          if (!img && item.description) {
+            const match = item.description.match(/<img[^>]+src="([^">]+)"/);
+            if (match) img = match[1];
+          }
+          // Default fallbacks for specific news types
+          if (!img) {
+            const queries = ["kremlin", "moscow", "victory_day", "ruble", "tech"];
+            img = `https://images.unsplash.com/photo-1513326127027-46383b159f8c?auto=format&fit=crop&q=80&w=800&${idx}`; 
+          }
+          return { ...item, displayImg: img };
+        });
+        setNews(enrichedItems.slice(0, 6));
         setLastUpdated(new Date());
       }
     } catch (error) {
       console.error("News fetch error:", error);
-      // Fallback data
       setNews([
-        { title: "Russian Universities Announce New Faculty Initiatives", link: "#", pubDate: new Date().toISOString(), description: "New programs aimed at international students..." },
-        { title: "Metro Expansion in Moscow: 3 New Stations Opening", link: "#", pubDate: new Date().toISOString(), description: "City officials confirm the completion of the latest branch..." }
+        { title: "Russian Universities Announce New Faculty Initiatives", link: "#", pubDate: new Date().toISOString(), description: "New programs aimed at international students...", displayImg: "https://images.unsplash.com/photo-1592280771190-3e2e4d571952?q=80&w=800" },
+        { title: "Metro Expansion in Moscow: 3 New Stations Opening", link: "#", pubDate: new Date().toISOString(), description: "City officials confirm the completion of the latest branch...", displayImg: "https://images.unsplash.com/photo-1560114928-40f1f1eb26a0?q=80&w=800" }
       ]);
     } finally {
       setLoading(false);
@@ -102,7 +114,7 @@ export function NewsSection() {
                    {/* News Image */}
                    <div className="relative h-48 overflow-hidden bg-background">
                       <img 
-                        src={item.thumbnail || item.enclosure?.link || `https://source.unsplash.com/featured/?russia,news,city&${idx}`} 
+                        src={item.displayImg} 
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-80 group-hover:opacity-100" 
                         alt={item.title} 
                       />

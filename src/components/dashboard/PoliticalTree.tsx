@@ -2,15 +2,15 @@
 
 import { useState } from 'react';
 import { 
-  Network, 
-  User, 
+  Building2, 
+  MapPin, 
+  UserCircle2, 
   ChevronRight, 
-  X, 
   ExternalLink,
-  Shield,
+  ShieldCheck,
   Building,
-  MapPin,
-  ChevronDown
+  Scale,
+  Crown
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -18,129 +18,123 @@ const STRUCTURE = [
   {
     role: "President of the Russian Federation",
     name: "Vladimir Putin",
-    bio: "Head of state, supreme commander-in-chief and holder of the highest office in the Russian Federation.",
-    region: "Federal / Kremlin",
-    level: "top"
+    bio: "The Head of State and Supreme Commander-in-Chief. Exercises overall leadership of the country and foreign policy.",
+    icon: Crown,
+    color: "red",
+    location: "Moscow Kremlin"
   },
   {
     role: "Prime Minister",
     name: "Mikhail Mishustin",
-    bio: "Head of the Government of the Russian Federation, leading the executive branch.",
-    region: "Federal / White House",
-    level: "mid"
+    bio: "Head of the Government executive branch. Focuses on economic socio-development and digital transformation.",
+    icon: Building2,
+    color: "blue",
+    location: "Government White House"
   },
   {
-    role: "Minister of Foreign Affairs",
-    name: "Sergei Lavrov",
-    bio: "Responsible for foreign policy and international relations of the Russian Federation.",
-    region: "Federal / MFA",
-    level: "mid"
+    role: "Parliament (Duma) Speaker",
+    name: "Vyacheslav Volodin",
+    bio: "Chairman of the Lower House of Parliament. Oversees legislative processes and national security laws.",
+    icon: Scale,
+    color: "emerald",
+    location: "Okhotny Ryad"
   },
   {
-    role: "Governor of Moscow City",
+    role: "Mayor of Moscow",
     name: "Sergey Sobyanin",
-    bio: "Leading the development, infrastructure, and administration of Russia's capital.",
-    region: "Regional / Moscow",
-    level: "local"
+    bio: "Leader of Russia's capital and primary gateway for students. Oversees transport and urban infrastructure.",
+    icon: MapPin,
+    color: "orange",
+    location: "Tverskaya, 13"
   }
 ];
 
 export function PoliticalTree() {
-  const [selected, setSelected] = useState<typeof STRUCTURE[0] | null>(null);
+  const [selected, setSelected] = useState<number>(0);
 
   return (
-    <div className="glass p-8 rounded-3xl border border-border bg-[#0D1117]/30 h-full relative overflow-hidden">
-      <div className="flex items-center justify-between mb-8">
-         <div className="flex items-center gap-3">
-            <div className="p-2 bg-red-600/10 rounded-xl text-red-500">
-               <Network size={20} />
-            </div>
-            <div>
-               <h3 className="font-black text-foreground tracking-tight">Interactive Political Tree</h3>
-               <p className="text-[10px] text-muted font-bold uppercase tracking-widest">Moscow • Regional • Local</p>
-            </div>
-         </div>
-      </div>
+    <div className="glass p-8 rounded-3xl border border-border bg-surface/30 relative overflow-hidden h-full">
+      <div className="relative z-10">
+        <div className="flex items-center gap-3 mb-10">
+           <div className="p-3 bg-red-600/10 rounded-2xl text-red-500">
+              <Building2 size={24} />
+           </div>
+           <div>
+              <h3 className="text-xl font-black text-foreground tracking-tight">Governance Hierarchy</h3>
+              <p className="text-[10px] text-muted font-black uppercase tracking-widest">Moscow Power Structure</p>
+           </div>
+        </div>
 
-      <div className="space-y-3">
-         {STRUCTURE.map((person, idx) => (
-           <motion.button
-             key={idx}
-             whileHover={{ x: 5 }}
-             onClick={() => setSelected(person)}
-             className={`w-full p-4 rounded-2xl flex items-center justify-between transition-all group ${
-               selected?.name === person.name 
-                 ? 'bg-red-600 border-red-500 text-white' 
-                 : 'bg-surface border border-border hover:border-red-500/30'
-             }`}
-           >
-              <div className="flex items-center gap-4">
-                 <div className={`w-10 h-10 rounded-full flex items-center justify-center p-0.5 border-2 ${selected?.name === person.name ? 'border-white/50' : 'border-border group-hover:border-red-500/20'}`}>
-                    <div className="w-full h-full rounded-full bg-background flex items-center justify-center text-muted group-hover:text-red-500 transition-colors">
-                       <User size={18} />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+           {/* Navigation List */}
+           <div className="space-y-4">
+              {STRUCTURE.map((person, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setSelected(idx)}
+                  className={`w-full text-left p-4 rounded-2xl border transition-all flex items-center justify-between group ${
+                    selected === idx 
+                      ? 'bg-red-600 border-red-500 shadow-xl scale-[1.02]' 
+                      : 'bg-background border-border hover:border-red-500/30'
+                  }`}
+                >
+                   <div className="flex items-center gap-4">
+                      <div className={`p-2 rounded-xl ${selected === idx ? 'bg-white/20 text-white' : 'bg-surface text-muted group-hover:text-red-500'}`}>
+                         <person.icon size={18} />
+                      </div>
+                      <div>
+                         <p className={`text-[8px] font-black uppercase tracking-tighter ${selected === idx ? 'text-white/70' : 'text-red-500'}`}>
+                            {person.role}
+                         </p>
+                         <h4 className={`font-bold text-sm leading-none mt-1 ${selected === idx ? 'text-white' : 'text-foreground'}`}>
+                            {person.name}
+                         </h4>
+                      </div>
+                   </div>
+                   <ChevronRight size={16} className={selected === idx ? 'text-white' : 'text-muted'} />
+                </button>
+              ))}
+           </div>
+
+           {/* Detail Panel */}
+           <AnimatePresence mode="wait">
+              <motion.div 
+                key={selected}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="glass p-8 rounded-3xl border border-red-500/20 bg-red-500/5 h-full flex flex-col justify-between"
+              >
+                 <div>
+                    <div className="flex justify-between items-start mb-6">
+                       <span className="text-[8px] font-black uppercase text-red-500 bg-red-500/10 px-3 py-1 rounded-full border border-red-500/20">
+                          {STRUCTURE[selected].role}
+                       </span>
+                       <ShieldCheck className="text-red-500/50" size={24} />
+                    </div>
+                    <h3 className="text-2xl font-black text-foreground mb-4">{STRUCTURE[selected].name}</h3>
+                    <p className="text-xs text-muted leading-relaxed mb-6 font-medium italic">
+                      "{STRUCTURE[selected].bio}"
+                    </p>
+                    <div className="flex items-center gap-2 text-[10px] text-foreground font-bold bg-background p-3 rounded-xl border border-border">
+                       <MapPin size={12} className="text-red-500" />
+                       HQ: {STRUCTURE[selected].location}
                     </div>
                  </div>
-                 <div className="text-left">
-                    <p className={`text-[10px] font-black uppercase tracking-tighter ${selected?.name === person.name ? 'text-white/70' : 'text-red-500'}`}>{person.role}</p>
-                    <h4 className="font-bold text-sm tracking-tight">{person.name}</h4>
-                 </div>
-              </div>
-              <ChevronRight size={16} className={selected?.name === person.name ? 'text-white' : 'text-muted'} />
-           </motion.button>
-         ))}
+
+                 <a 
+                   href={`https://en.wikipedia.org/wiki/${STRUCTURE[selected].name.replace(' ', '_')}`}
+                   target="_blank"
+                   className="mt-8 w-full py-4 bg-foreground text-background font-black text-[10px] uppercase tracking-widest rounded-2xl flex items-center justify-center gap-2 hover:bg-red-600 hover:text-white transition-all shadow-xl"
+                 >
+                    Official Archive <ExternalLink size={14} />
+                 </a>
+              </motion.div>
+           </AnimatePresence>
+        </div>
       </div>
 
-      <AnimatePresence>
-         {selected && (
-            <motion.div 
-               initial={{ opacity: 0, scale: 0.95 }}
-               animate={{ opacity: 1, scale: 1 }}
-               exit={{ opacity: 0, scale: 0.95 }}
-               className="absolute inset-0 z-20 bg-background/95 backdrop-blur-md p-8 flex flex-col justify-between border border-border rounded-3xl"
-            >
-               <div>
-                  <div className="flex justify-between items-start mb-6">
-                     <div className="p-3 bg-red-600 text-white rounded-2xl shadow-lg">
-                        <Shield size={24} />
-                     </div>
-                     <button onClick={() => setSelected(null)} className="p-2 hover:bg-white/5 rounded-full text-muted hover:text-foreground">
-                        <X size={20} />
-                     </button>
-                  </div>
-
-                  <span className="text-[10px] font-black uppercase text-red-500 tracking-widest bg-red-500/10 px-3 py-1 rounded-full border border-red-500/20 mb-4 inline-block">
-                     {selected.role}
-                  </span>
-                  <h3 className="text-3xl font-black text-foreground mb-4">{selected.name}</h3>
-                  
-                  <div className="grid grid-cols-2 gap-4 mb-6">
-                     <div className="flex items-center gap-2 text-xs text-muted">
-                        <Building size={14} className="text-red-500" /> {selected.region}
-                     </div>
-                     <div className="flex items-center gap-2 text-xs text-muted">
-                        <MapPin size={14} className="text-red-500" /> Russian Government
-                     </div>
-                  </div>
-
-                  <p className="text-sm text-muted leading-relaxed font-medium">
-                     {selected.bio}
-                  </p>
-               </div>
-
-               <a 
-                 href={`https://en.wikipedia.org/wiki/${selected.name.replace(' ', '_')}`}
-                 target="_blank"
-                 className="flex items-center justify-center gap-2 w-full py-4 bg-red-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-red-700 transition-all shadow-xl mt-4"
-               >
-                  Full Bio Archive <ExternalLink size={16} />
-               </a>
-            </motion.div>
-         )}
-      </AnimatePresence>
-
-      <div className="absolute top-2 right-2 flex flex-col items-center opacity-10 pointer-events-none">
-         <Building size={150} />
-      </div>
+      <Building size={200} className="absolute bottom-[-50px] right-[-50px] text-foreground/[0.03] rotate-[-15deg]" />
     </div>
   );
 }

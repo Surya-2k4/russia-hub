@@ -4,10 +4,8 @@ import { useState } from 'react';
 import { 
   TrendingDown, 
   TrendingUp, 
-  Info, 
   Flag, 
   Zap, 
-  DollarSign, 
   BarChart3,
   Calendar,
   AlertCircle
@@ -29,16 +27,19 @@ const CURRENCIES = [
 export function RubleVolatility() {
   const [activeEvent, setActiveEvent] = useState<number | null>(null);
 
+  // Simple line data points
+  const points = [85, 90, 88, 92, 95, 91, 89, 100, 98, 95, 92, 94, 98, 102, 100, 95, 93, 90, 88, 85, 87, 90, 92, 95];
+
   return (
     <div className="glass p-8 rounded-3xl border border-border bg-[#0D1117]/50 relative overflow-hidden">
       <div className="relative z-10">
         <div className="flex justify-between items-start mb-10">
            <div>
               <h3 className="text-2xl font-black text-foreground flex items-center gap-3">
-                 RUB Volatility Index
-                 <span className="text-[10px] bg-red-500/10 text-red-500 border border-red-500/20 px-2 py-0.5 rounded-full animate-pulse uppercase">High Active</span>
+                 Volatility Index
+                 <span className="text-[10px] bg-red-500/10 text-red-500 border border-red-500/20 px-2 py-0.5 rounded-full uppercase font-black">Live</span>
               </h3>
-              <p className="text-muted text-xs mt-1">Measuring market sensitivity vs Global Currencies</p>
+              <p className="text-muted text-xs mt-1">Simple market trend analysis for students</p>
            </div>
            <BarChart3 className="text-blue-500 opacity-50" size={32} />
         </div>
@@ -58,79 +59,94 @@ export function RubleVolatility() {
            ))}
         </div>
 
-        {/* Volatility Chart Mockup with Events */}
+        {/* Simplified Line Chart */}
         <div className="space-y-6">
-           <div className="flex items-center gap-2 mb-4">
-              <Calendar size={16} className="text-blue-500" />
-              <h4 className="text-[10px] font-black uppercase text-muted tracking-widest">Geopolitical Event Overlay</h4>
+           <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                 <Calendar size={16} className="text-blue-500" />
+                 <h4 className="text-[10px] font-black uppercase text-muted tracking-widest">Market Events & Trends</h4>
+              </div>
+              <span className="text-[8px] text-muted font-bold">24-Hour Timeline</span>
            </div>
 
-           <div className="relative h-48 w-full bg-background/50 rounded-2xl border border-border border-dashed p-4 flex items-end gap-1">
-              {/* Fake Chart Bars */}
-              {Array(30).fill(0).map((_, i) => {
-                const isEvent = [10, 18, 25].includes(i);
-                const height = isEvent ? "80%" : `${40 + Math.random() * 40}%`;
-                return (
-                  <div 
-                    key={i} 
-                    className="flex-1 group relative flex flex-col items-center gap-2"
-                  >
-                     <div 
-                       className={`w-full rounded-t-xs transition-all ${isEvent ? 'bg-red-500 opacity-100 shadow-[0_0_10px_rgba(239,68,68,0.5)]' : 'bg-blue-600/20 group-hover:bg-blue-600/40'}`}
-                       style={{ height }}
-                     />
-                     {isEvent && (
-                       <motion.button 
-                         whileHover={{ scale: 1.2 }}
-                         onClick={() => setActiveEvent([10, 18, 25].indexOf(i))}
-                         className="absolute -top-6 w-4 h-4 rounded-full bg-red-600 border border-white/20 flex items-center justify-center text-white"
-                       >
-                          <Zap size={8} />
-                       </motion.button>
-                     )}
-                  </div>
-                );
-              })}
+           <div className="relative h-40 w-full overflow-hidden flex items-center">
+              <svg className="w-full h-full preserve-3d" viewBox="0 0 240 100">
+                 <defs>
+                    <linearGradient id="grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                       <stop offset="0%" style={{ stopColor: 'rgb(37, 99, 235)', stopOpacity: 0.2 }} />
+                       <stop offset="100%" style={{ stopColor: 'rgb(37, 99, 235)', stopOpacity: 0 }} />
+                    </linearGradient>
+                 </defs>
+                 {/* Area */}
+                 <path 
+                    d={`M 0 100 ${points.map((p, i) => `L ${i * 10} ${100 - p}`).join(' ')} L 230 100 Z`} 
+                    fill="url(#grad)" 
+                 />
+                 {/* Line */}
+                 <motion.path 
+                    initial={{ pathLength: 0 }}
+                    animate={{ pathLength: 1 }}
+                    transition={{ duration: 2 }}
+                    d={`M 0 ${100 - points[0]} ${points.map((p, i) => `L ${i * 10} ${100 - p}`).join(' ')}`} 
+                    fill="none" 
+                    stroke="rgb(37, 99, 235)" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                 />
+                 
+                 {/* Event Markers */}
+                 {[100, 180, 220].map((x, i) => (
+                    <g key={i} className="cursor-pointer" onClick={() => setActiveEvent(i)}>
+                       <line x1={x} y1="0" x2={x} y2="100" stroke="rgba(239, 68, 68, 0.2)" strokeDasharray="4" />
+                       <circle 
+                         cx={x} 
+                         cy={100 - points[x/10]} 
+                         r="4" 
+                         className="fill-red-500 animate-pulse"
+                       />
+                    </g>
+                 ))}
+              </svg>
            </div>
 
            <AnimatePresence mode="wait">
               {activeEvent !== null ? (
                 <motion.div 
                   key={activeEvent}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 10 }}
                   className="p-6 rounded-2xl bg-red-500/5 border border-red-500/20 flex gap-4 items-center"
                 >
                    <div className="p-3 bg-red-500/10 rounded-xl text-red-500">
-                      <Flag size={20} />
+                      <Zap size={20} />
                    </div>
-                   <div>
-                      <h5 className="font-bold text-foreground">{EVENTS[activeEvent].label}</h5>
-                      <p className="text-xs text-muted leading-relaxed">
-                         <span className="font-bold text-red-500 mr-2">{EVENTS[activeEvent].date}</span>
-                         Market impact resulted in {EVENTS[activeEvent].impact.toLowerCase()}.
+                   <div className="flex-1">
+                      <div className="flex justify-between items-start">
+                         <h5 className="font-bold text-foreground">{EVENTS[activeEvent].label}</h5>
+                         <span className="text-[10px] font-black text-red-500 uppercase">{EVENTS[activeEvent].date}</span>
+                      </div>
+                      <p className="text-xs text-muted leading-relaxed mt-1">
+                         Observed market impact: {EVENTS[activeEvent].impact}
                       </p>
                    </div>
+                   <button onClick={() => setActiveEvent(null)} className="text-muted hover:text-foreground">
+                      &times;
+                   </button>
                 </motion.div>
               ) : (
-                <div className="p-6 text-center text-[10px] text-muted font-bold uppercase tracking-widest bg-background/30 rounded-2xl border border-border border-dashed">
-                   Select red event markers on the timeline for analysis
+                <div className="p-4 flex items-center gap-3 bg-blue-600/5 rounded-2xl border border-blue-600/10 opacity-70">
+                   <AlertCircle size={16} className="text-blue-500" />
+                   <p className="text-[10px] font-bold text-muted uppercase tracking-widest">Click markers on the trend-line to see event details</p>
                 </div>
               )}
            </AnimatePresence>
         </div>
       </div>
-
-      <div className="mt-8 flex gap-4 items-center bg-blue-600/5 p-4 rounded-2xl border border-blue-600/10">
-         <AlertCircle size={18} className="text-blue-500 shrink-0" />
-         <p className="text-[10px] text-muted leading-tight">
-            The RUB index is highly sensitive to exports and commodity prices. Indicators are refreshed via Central Bank nodes.
-         </p>
-      </div>
       
-      {/* Decorative */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-red-600/5 blur-[100px] rounded-full" />
+      {/* Decorative Blob */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 blur-[100px] rounded-full" />
     </div>
   );
 }
