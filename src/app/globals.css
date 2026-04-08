@@ -11,19 +11,23 @@
   --accent: #CC0000;
   --gold: #F0B429;
   --card-bg: rgba(22, 27, 34, 0.7);
+  --selection: rgba(47, 129, 247, 0.3);
+  --shimmer: rgba(255, 255, 255, 0.05);
 }
 
 [data-theme='light'] {
-  --background: #F8FAFC;
-  --foreground: #0F172A;
-  --surface: #FFFFFF;
-  --surface-hover: #F1F5F9;
-  --muted: #64748B;
-  --border: #E2E8F0;
-  --primary: #2563EB;
-  --accent: #DC2626;
-  --gold: #D97706;
-  --card-bg: rgba(255, 255, 255, 0.8);
+  --background: #FFFFFF;
+  --foreground: #09090B;
+  --surface: #FAFAFA;
+  --surface-hover: #F4F4F5;
+  --muted: #52525B;
+  --border: #E4E4E7;
+  --primary: #18181B;
+  --accent: #BE123C;
+  --gold: #A16207;
+  --card-bg: rgba(255, 255, 255, 0.5);
+  --selection: rgba(0, 0, 0, 0.05);
+  --shimmer: rgba(0, 0, 0, 0.05);
 }
 
 @theme inline {
@@ -37,6 +41,7 @@
   --color-accent: var(--accent);
   --color-gold: var(--gold);
   --color-card-bg: var(--card-bg);
+  --color-selection: var(--selection);
 }
 
 body {
@@ -60,10 +65,10 @@ h1, h2, h3, h4 {
 }
 
 .glass-hover:hover {
-  background: rgba(28, 33, 40, 0.85);
-  border: 1px solid rgba(48, 54, 61, 1);
+  background: var(--surface-hover);
+  border: 1px solid var(--primary);
   transform: translateY(-2px);
-  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
 }
 
 /* Animated border for progress bars */
@@ -87,7 +92,7 @@ h1, h2, h3, h4 {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.05),
+    var(--shimmer),
     transparent
   );
   animation: shimmer 1.5s infinite;

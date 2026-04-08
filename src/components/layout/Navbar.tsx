@@ -64,11 +64,11 @@ export function Navbar() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 top-16 z-[90] bg-[#0D1117] md:hidden overflow-y-auto"
+            className="fixed inset-0 top-16 z-[90] bg-background md:hidden overflow-y-auto"
           >
             <div className="p-6 space-y-8">
               <div className="px-2">
-                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#30363D] mb-4">Navigational Modules</p>
+                 <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted mb-4">Navigational Modules</p>
                  <div className="grid grid-cols-1 gap-3">
                     {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
                        const isActive = pathname === href;
@@ -78,28 +78,28 @@ export function Navbar() {
                           href={href}
                           onClick={() => setIsMobileMenuOpen(false)}
                           className={`flex items-center justify-between p-4 rounded-2xl border transition-all ${
-                            isActive ? 'bg-blue-600/10 border-blue-500/50' : 'bg-[#161B22]/50 border-[#30363D]'
+                            isActive ? 'bg-blue-600/10 border-blue-500/50' : 'bg-surface/50 border-border'
                           }`}
                         >
                            <div className="flex items-center gap-4">
-                              <div className={`p-2 rounded-lg ${isActive ? 'bg-blue-600 text-white' : 'bg-[#0D1117] text-[#8B949E]'}`}>
+                              <div className={`p-2 rounded-lg ${isActive ? 'bg-blue-600 text-white' : 'bg-background text-muted'}`}>
                                  <Icon size={20} />
                               </div>
-                              <span className={`text-lg font-bold ${isActive ? 'text-white' : 'text-[#8B949E]'}`}>{label}</span>
+                              <span className={`text-lg font-bold ${isActive ? 'text-white' : 'text-muted'}`}>{label}</span>
                            </div>
-                           <ChevronRight size={18} className={isActive ? 'text-blue-500' : 'text-[#30363D]'} />
+                           <ChevronRight size={18} className={isActive ? 'text-blue-500' : 'text-muted'} />
                         </Link>
                        );
                     })}
                  </div>
               </div>
 
-              <div className="p-6 rounded-3xl bg-gradient-to-br from-[#161B22] to-blue-900/10 border border-[#30363D] relative overflow-hidden">
+              <div className="p-6 rounded-3xl bg-gradient-to-br from-surface to-blue-900/10 border border-border relative overflow-hidden">
                  <div className="relative z-10">
                     <h4 className="font-bold text-white mb-1 flex items-center gap-2">
                        <Sparkles size={16} className="text-blue-400" /> Premium Access
                     </h4>
-                    <p className="text-xs text-[#8B949E] mb-4">Join our community for faster visa processing.</p>
+                    <p className="text-xs text-muted mb-4">Join our community for faster visa processing.</p>
                     <Link href="/community" onClick={() => setIsMobileMenuOpen(false)} className="inline-block px-4 py-2 bg-blue-600 rounded-lg text-xs font-bold text-white shadow-xl">
                        Join Now
                     </Link>

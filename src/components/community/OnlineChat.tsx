@@ -89,13 +89,13 @@ export function OnlineChat() {
   const filteredMessages = messages.filter(m => m.channel === activeChannel);
 
   return (
-    <div className="glass rounded-3xl border border-[#30363D] overflow-hidden flex h-[650px] shadow-2xl relative">
+    <div className="glass rounded-3xl border border-border overflow-hidden flex h-[650px] shadow-2xl relative">
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 via-red-600 to-white opacity-50" />
       
       {/* Sidebar: Channels */}
-      <div className="w-20 md:w-64 bg-[#0D1117] border-r border-[#30363D] flex flex-col pt-4">
+      <div className="w-20 md:w-64 bg-background border-r border-border flex flex-col pt-4">
         <div className="px-6 mb-8 hidden md:block">
-           <h3 className="text-xs font-black text-[#8B949E] uppercase tracking-widest flex items-center gap-2">
+           <h3 className="text-xs font-black text-muted uppercase tracking-widest flex items-center gap-2">
              <Hash size={12} /> Channels
            </h3>
         </div>
@@ -108,35 +108,35 @@ export function OnlineChat() {
                className={`w-full flex items-center justify-center md:justify-start gap-3 p-3 rounded-xl transition-all ${
                  activeChannel === channel 
                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20' 
-                   : 'text-[#8B949E] hover:bg-white/5 hover:text-white'
+                   : 'text-muted hover:bg-foreground/5 hover:text-foreground'
                }`}
              >
-                <Hash size={18} className={activeChannel === channel ? 'text-white' : 'text-[#30363D]'} />
+                <Hash size={18} className={activeChannel === channel ? 'text-white' : 'text-muted'} />
                 <span className="hidden md:block font-bold text-sm lowercase">{channel}</span>
              </button>
            ))}
         </div>
 
-        <div className="p-4 border-t border-[#30363D] hidden md:block">
+        <div className="p-4 border-t border-border hidden md:block">
            <div className="bg-blue-600/10 border border-blue-500/20 p-4 rounded-2xl">
               <p className="text-[10px] font-black text-blue-400 uppercase mb-2">Pro Tip</p>
-              <p className="text-[10px] text-[#8B949E] leading-relaxed">Use #housing for accommodation queries!</p>
+              <p className="text-[10px] text-muted leading-relaxed">Use #housing for accommodation queries!</p>
            </div>
         </div>
       </div>
 
       {/* Main Chat Area */}
-      <div className="flex-1 flex flex-col bg-[#161B22]/20 backdrop-blur-sm">
+      <div className="flex-1 flex flex-col bg-surface/20 backdrop-blur-sm">
         {/* Chat Header */}
-        <div className="h-16 flex items-center justify-between px-6 border-b border-[#30363D] bg-[#0D1117]/50">
+        <div className="h-16 flex items-center justify-between px-6 border-b border-border bg-background/50">
            <div className="flex items-center gap-4">
              <div className="p-2 bg-blue-600/10 rounded-lg text-blue-500"><Hash size={20} /></div>
             <div>
-              <h4 className="font-bold text-white text-sm">#{activeChannel}</h4>
-              <p className="text-[10px] text-[#8B949E]">{CHANNEL_DESCRIPTIONS[activeChannel]}</p>
+              <h4 className="font-bold text-foreground text-sm">#{activeChannel}</h4>
+              <p className="text-[10px] text-muted">{CHANNEL_DESCRIPTIONS[activeChannel]}</p>
             </div>
           </div>
-          <div className="flex items-center gap-4 text-[#8B949E]">
+          <div className="flex items-center gap-4 text-muted">
             {/* Icons removed per request */}
           </div>
         </div>
@@ -154,19 +154,19 @@ export function OnlineChat() {
                className={`flex gap-4 ${msg.user === 'You' ? 'flex-row-reverse' : ''}`}
              >
                 <div className={`w-10 h-10 rounded-full flex items-center justify-center border ${
-                  msg.user === 'You' ? 'bg-blue-600 border-blue-500 shadow-lg' : 'bg-[#0D1117] border-[#30363D]'
+                  msg.user === 'You' ? 'bg-blue-600 border-blue-500 shadow-lg' : 'bg-background border-border'
                 }`}>
-                   <UserCircle size={24} className="text-white opacity-50" />
+                   <UserCircle size={24} className="text-foreground opacity-50" />
                 </div>
                 <div className={`max-w-[70%] space-y-1 ${msg.user === 'You' ? 'text-right' : ''}`}>
                    <div className="flex items-center gap-2 mb-1 justify-end flex-row-reverse">
-                      <span className="text-xs font-black text-white">{msg.user}</span>
-                      <span className="text-[10px] text-[#8B949E]">{msg.time}</span>
+                      <span className="text-xs font-black text-foreground">{msg.user}</span>
+                      <span className="text-[10px] text-muted">{msg.time}</span>
                    </div>
                    <div className={`p-4 rounded-2xl text-sm leading-relaxed ${
                      msg.user === 'You' 
-                       ? 'bg-blue-600 text-white rounded-tr-none' 
-                       : 'bg-[#161B22] border border-[#30363D] text-[#E6EDF3] rounded-tl-none'
+                       ? 'bg-blue-600 text-white rounded-tr-none shadow-md' 
+                       : 'bg-surface border border-border text-foreground rounded-tl-none shadow-sm'
                    }`}>
                       {msg.text}
                    </div>
@@ -176,10 +176,10 @@ export function OnlineChat() {
 
            {isTyping && (
              <div className="flex gap-4">
-                <div className="w-10 h-10 rounded-full bg-[#0D1117] border border-[#30363D] flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full bg-background border border-border flex items-center justify-center">
                    <Sparkles size={18} className="text-blue-500 animate-pulse" />
                 </div>
-                <div className="bg-[#161B22] border border-[#30363D] px-4 py-2 rounded-2xl rounded-tl-none">
+                <div className="bg-surface border border-border px-4 py-2 rounded-2xl rounded-tl-none">
                    <div className="flex gap-1">
                       <span className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce" />
                       <span className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce [animation-delay:0.2s]" />
@@ -194,13 +194,13 @@ export function OnlineChat() {
         <div className="p-6">
            <form 
              onSubmit={handleSendMessage}
-             className="bg-[#0D1117] border border-[#30363D] rounded-2xl p-2 flex items-center gap-2 shadow-inner focus-within:border-blue-500/50 transition-all"
+             className="bg-background border border-border rounded-2xl p-2 flex items-center gap-2 shadow-inner focus-within:border-blue-500/50 transition-all"
            >
-              <div className="flex items-center gap-2 px-2 border-r border-[#30363D] relative">
+              <div className="flex items-center gap-2 px-2 border-r border-border relative">
                  <button 
                    type="button" 
                    onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                   className={`p-2 transition-colors ${showEmojiPicker ? 'text-blue-500' : 'text-[#8B949E] hover:text-blue-500'}`}
+                   className={`p-2 transition-colors ${showEmojiPicker ? 'text-blue-500' : 'text-muted hover:text-blue-500'}`}
                  >
                    <Smile size={20} />
                  </button>
@@ -211,7 +211,7 @@ export function OnlineChat() {
                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
                        animate={{ opacity: 1, y: 0, scale: 1 }}
                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                       className="absolute bottom-full left-0 mb-4 bg-[#0D1117] border border-[#30363D] p-3 rounded-2xl shadow-2xl grid grid-cols-4 gap-2 z-50 w-48"
+                       className="absolute bottom-full left-0 mb-4 bg-background border border-border p-3 rounded-2xl shadow-2xl grid grid-cols-4 gap-2 z-50 w-48"
                      >
                        {["😀", "😂", "😍", "🎉", "🔥", "🙌", "🇷🇺", "🎓", "🚀", "✨", "🙏", "❤️"].map(emoji => (
                          <button
@@ -235,7 +235,7 @@ export function OnlineChat() {
                 placeholder={`Message #${activeChannel}`}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                className="bg-transparent flex-1 outline-hidden text-white px-4 text-sm"
+                className="bg-transparent flex-1 outline-hidden text-foreground px-4 text-sm"
               />
               <button 
                 type="submit"
@@ -249,14 +249,14 @@ export function OnlineChat() {
               <div className="flex items-center gap-4">
                  <div className="flex items-center gap-1.5">
                     <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                    <span className="text-[10px] font-bold text-[#8B949E] uppercase tracking-widest">{onlineCount.toLocaleString()} Students Online</span>
+                    <span className="text-[10px] font-bold text-muted uppercase tracking-widest">{onlineCount.toLocaleString()} Students Online</span>
                  </div>
                  <div className="flex items-center gap-1.5">
                     <ShieldCheck size={12} className="text-blue-500" />
-                    <span className="text-[10px] font-bold text-[#8B949E] uppercase tracking-widest">Encrypted Hub</span>
+                    <span className="text-[10px] font-bold text-muted uppercase tracking-widest">Encrypted Hub</span>
                  </div>
               </div>
-              <p className="text-[10px] text-[#30363D] font-bold">Powered by NeonDB Realtime</p>
+              <p className="text-[10px] text-muted font-bold">Powered by NeonDB Realtime</p>
            </div>
         </div>
       </div>

@@ -26,7 +26,7 @@ export default function RootLayout({
         {/* Placeholder for Google AdSense Script */}
         {/* <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXX" crossOrigin="anonymous"></script> */}
       </head>
-      <body className="antialiased min-h-screen flex flex-col selection:bg-blue-500/30 bg-background text-foreground">
+      <body className="antialiased min-h-screen flex flex-col selection:bg-selection bg-background text-foreground">
         <ThemeProvider attribute="data-theme" defaultTheme="dark" enableSystem={false}>
           <Navbar />
           <main className="flex-1 pb-10">
