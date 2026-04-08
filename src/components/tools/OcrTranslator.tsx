@@ -161,10 +161,10 @@ export function OcrTranslator() {
       </div>
 
       <div className="p-8 lg:p-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
            <div 
              onClick={() => fileInputRef.current?.click()}
-             className={`relative group cursor-pointer aspect-square rounded-3xl border-2 border-dashed border-border/50 hover:border-blue-500 transition-all flex flex-col items-center justify-center p-8 bg-background/50 overflow-hidden ${loading || translating ? 'pointer-events-none' : ''}`}
+             className={`relative group cursor-pointer aspect-square md:aspect-auto md:h-80 lg:h-full lg:aspect-square rounded-3xl border-2 border-dashed border-border/50 hover:border-blue-500 transition-all flex flex-col items-center justify-center p-8 bg-background/50 overflow-hidden ${loading || translating ? 'pointer-events-none' : ''}`}
            >
               {image ? (
                 <img src={image} className="w-full h-full object-contain rounded-2xl opacity-50 group-hover:opacity-30 transition-all" alt="Upload" />

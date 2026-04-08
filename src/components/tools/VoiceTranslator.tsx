@@ -86,13 +86,13 @@ export function VoiceTranslator() {
         </div>
       </div>
 
-      <div className="p-8 lg:p-10 space-y-8">
-         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+      <div className="p-8 lg:p-12 space-y-10 relative">
+         <div className="grid grid-cols-1 lg:grid-cols-[1fr,auto,1fr] gap-8 items-stretch">
             {/* Input Side */}
             <div className="space-y-4">
                <div className="flex justify-between items-center px-1">
-                  <span className="text-[10px] font-black uppercase text-blue-500 tracking-widest">
-                     {sourceLang === 'ru' ? 'Russian' : 'English'}
+                  <span className="text-[10px] font-black uppercase text-blue-500 tracking-widest bg-blue-500/10 px-3 py-1 rounded-full">
+                     {sourceLang === 'ru' ? 'Russian Source' : 'English Source'}
                   </span>
                   <button onClick={() => speak(sourceText, sourceLang)} className="p-2 text-muted hover:text-blue-500 transition-all">
                      <Volume2 size={16} />
@@ -103,12 +103,12 @@ export function VoiceTranslator() {
                     value={sourceText}
                     onChange={(e) => setSourceText(e.target.value)}
                     placeholder="Type anything to translate..."
-                    className="w-full h-48 bg-background/50 border border-border rounded-3xl p-6 text-foreground font-medium focus:border-blue-500/50 outline-hidden transition-all resize-none shadow-inner"
+                    className="w-full h-56 lg:h-72 bg-background/50 border border-border rounded-3xl p-6 text-foreground font-medium focus:border-blue-500/50 outline-hidden transition-all resize-none shadow-inner text-base lg:text-lg"
                   />
                   {sourceText && (
                     <button 
                       onClick={() => setSourceText("")} 
-                      className="absolute bottom-4 right-4 p-2 bg-surface border border-border rounded-xl text-muted hover:text-red-500"
+                      className="absolute bottom-4 right-4 p-2 bg-surface border border-border rounded-xl text-muted hover:text-red-500 shadow-xl"
                     >
                        <Trash2 size={14} />
                     </button>
@@ -117,21 +117,22 @@ export function VoiceTranslator() {
             </div>
 
             {/* Middle Action */}
-            <div className="flex lg:flex-col justify-center gap-4 relative">
-               <div className="hidden lg:block absolute left-1/2 top-[-20px] bottom-[-20px] w-px bg-border/50 -z-10" />
+            <div className="flex flex-row lg:flex-col items-center justify-center gap-4 py-4 lg:py-0">
+               <div className="hidden lg:block h-full w-px bg-border/50" />
                <button 
                  onClick={handleSwap}
-                 className="p-4 bg-blue-600 text-white rounded-full hover:rotate-180 transition-all duration-500 shadow-[0_0_20px_rgba(37,99,235,0.3)] z-10"
+                 className="p-5 bg-blue-600 text-white rounded-full hover:rotate-180 transition-all duration-500 shadow-[0_0_25px_rgba(37,99,235,0.4)] z-10 active:scale-90"
                >
-                  <ArrowRightLeft size={20} />
+                  <ArrowRightLeft size={24} className="rotate-90 lg:rotate-0" />
                </button>
+               <div className="hidden lg:block h-full w-px bg-border/50" />
             </div>
 
             {/* Output Side */}
             <div className="space-y-4">
                <div className="flex justify-between items-center px-1">
-                  <span className="text-[10px] font-black uppercase text-emerald-500 tracking-widest">
-                     {targetLang === 'ru' ? 'Russian' : 'English'}
+                  <span className="text-[10px] font-black uppercase text-emerald-500 tracking-widest bg-emerald-500/10 px-3 py-1 rounded-full">
+                     {targetLang === 'ru' ? 'Russian Target' : 'English Target'}
                   </span>
                   <div className="flex gap-2">
                      <button 
@@ -145,12 +146,12 @@ export function VoiceTranslator() {
                      </button>
                   </div>
                </div>
-               <div className="w-full h-48 bg-emerald-500/5 border border-emerald-500/20 rounded-3xl p-6 text-foreground font-semibold leading-relaxed overflow-y-auto whitespace-pre-wrap relative shadow-inner">
+               <div className="w-full h-56 lg:h-72 bg-emerald-500/5 border border-emerald-500/20 rounded-3xl p-6 text-foreground font-semibold leading-relaxed overflow-y-auto whitespace-pre-wrap relative shadow-inner text-base lg:text-lg">
                   {loading ? (
-                    <div className="absolute inset-0 flex items-center justify-center bg-background/20 backdrop-blur-xs">
-                       <Loader2 className="text-emerald-500 animate-spin" size={32} />
+                    <div className="absolute inset-0 flex items-center justify-center bg-background/20 backdrop-blur-[2px]">
+                       <Loader2 className="text-emerald-500 animate-spin" size={40} />
                     </div>
-                  ) : translatedText || <span className="opacity-20 italic font-normal">Translation will appear here...</span>}
+                  ) : translatedText || <span className="opacity-20 italic font-normal">Intelligence output will appear here...</span>}
                </div>
             </div>
          </div>
