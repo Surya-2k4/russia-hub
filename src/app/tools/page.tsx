@@ -5,6 +5,8 @@ import { OcrTranslator } from '@/components/tools/OcrTranslator';
 import { WardrobeAdvisor } from '@/components/tools/WardrobeAdvisor';
 import { HowToGuides } from '@/components/tools/HowToGuides';
 import { ClimateTracker } from '@/components/tools/ClimateTracker';
+import { JobFinder } from '@/components/tools/JobFinder';
+import { RussianCalendar } from '@/components/tools/RussianCalendar';
 import { AdBanner } from '@/components/layout/AdBanner';
 import { 
   Scan, 
@@ -15,7 +17,9 @@ import {
   LayoutGrid,
   ChevronRight,
   TrendingUp,
-  MessageSquare
+  MessageSquare,
+  Calendar,
+  Briefcase
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -51,6 +55,22 @@ const TOOLS = [
     icon: HelpCircle, 
     color: 'orange',
     component: HowToGuides
+  },
+  { 
+    id: 'calendar', 
+    name: 'Russian Calendar', 
+    desc: 'National holidays, academic schedules, and bridge-day logic.', 
+    icon: Calendar, 
+    color: 'red',
+    component: RussianCalendar
+  },
+  { 
+    id: 'jobs', 
+    name: 'Job Search Hub', 
+    desc: 'Student work regulations and direct search via HH.ru integration.', 
+    icon: Briefcase, 
+    color: 'emerald',
+    component: JobFinder
   },
   { 
     id: 'language', 
